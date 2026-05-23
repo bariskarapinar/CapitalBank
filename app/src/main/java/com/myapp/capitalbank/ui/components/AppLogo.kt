@@ -18,6 +18,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.myapp.capitalbank.ui.theme.Gold
 
+/**
+ * The primary branding component for the application.
+ * Features a circular gold bank icon and stylized typography.
+ */
 @Composable
 fun AppLogo(
     modifier: Modifier = Modifier,
