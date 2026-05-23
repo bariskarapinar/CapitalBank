@@ -20,15 +20,19 @@ class AccountDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val accountId: String = checkNotNull(savedStateHandle["accountId"])
+    // The account ID is required to fetch specific transactions. 
+    // We default to an empty string to avoid crashes during state restoration.
+    private val accountId: String = savedStateHandle.get<String>("accountId") ?: ""
 
     private val _uiState = MutableStateFlow(AccountDetailsUiState())
     val uiState: StateFlow<AccountDetailsUiState> = _uiState.asStateFlow()
 
     init {
-        _uiState.update { it.copy(isLoading = true) }
-        repository.getTransactions(accountId).onEach { transactions ->
-            _uiState.update { it.copy(transactions = transactions, isLoading = false) }
-        }.launchIn(viewModelScope)
+        if (accountId.isNotEmpty()) {
+            _uiState.update { it.copy(isLoading = true) }
+            repository.getTransactions(accountId).onEach { transactions ->
+                _uiState.update { it.copy(transactions = transactions, isLoading = false) }
+            }.launchIn(viewModelScope)
+        }
     }
 }
