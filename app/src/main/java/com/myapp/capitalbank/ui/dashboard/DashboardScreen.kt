@@ -37,7 +37,19 @@ fun DashboardScreen(
     onInvestmentsClick: () -> Unit,
     onCryptoClick: () -> Unit,
     onAiAssistantClick: () -> Unit,
-    onRewardsClick: () -> Unit
+    onRewardsClick: () -> Unit,
+    onInsuranceClick: () -> Unit,
+    onBusinessClick: () -> Unit,
+    onLifestyleClick: () -> Unit,
+    onAnalyticsClick: () -> Unit,
+    onLoansClick: () -> Unit,
+    onFinderClick: () -> Unit,
+    onCharityClick: () -> Unit,
+    onNewsClick: () -> Unit,
+    onFamilyClick: () -> Unit,
+    onTravelClick: () -> Unit,
+    onVaultClick: () -> Unit,
+    onEcoClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -77,7 +89,19 @@ fun DashboardScreen(
                 ExtraFeaturesSection(
                     onInvestmentsClick = onInvestmentsClick,
                     onCryptoClick = onCryptoClick,
-                    onRewardsClick = onRewardsClick
+                    onRewardsClick = onRewardsClick,
+                    onInsuranceClick = onInsuranceClick,
+                    onBusinessClick = onBusinessClick,
+                    onLifestyleClick = onLifestyleClick,
+                    onAnalyticsClick = onAnalyticsClick,
+                    onLoansClick = onLoansClick,
+                    onFinderClick = onFinderClick,
+                    onCharityClick = onCharityClick,
+                    onNewsClick = onNewsClick,
+                    onFamilyClick = onFamilyClick,
+                    onTravelClick = onTravelClick,
+                    onVaultClick = onVaultClick,
+                    onEcoClick = onEcoClick
                 )
             }
 
@@ -210,15 +234,69 @@ fun QuickActionItem(label: String, icon: ImageVector, color: Color, onClick: () 
 fun ExtraFeaturesSection(
     onInvestmentsClick: () -> Unit,
     onCryptoClick: () -> Unit,
-    onRewardsClick: () -> Unit
+    onRewardsClick: () -> Unit,
+    onInsuranceClick: () -> Unit,
+    onBusinessClick: () -> Unit,
+    onLifestyleClick: () -> Unit,
+    onAnalyticsClick: () -> Unit,
+    onLoansClick: () -> Unit,
+    onFinderClick: () -> Unit,
+    onCharityClick: () -> Unit,
+    onNewsClick: () -> Unit,
+    onFamilyClick: () -> Unit,
+    onTravelClick: () -> Unit,
+    onVaultClick: () -> Unit,
+    onEcoClick: () -> Unit
 ) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        FeatureMiniCard("Stocks", Icons.Default.TrendingUp, Emerald, Modifier.weight(1f), onInvestmentsClick)
-        FeatureMiniCard("Crypto", Icons.Default.CurrencyBitcoin, Color(0xFFF7931A), Modifier.weight(1f), onCryptoClick)
-        FeatureMiniCard("Rewards", Icons.Default.Star, Gold, Modifier.weight(1f), onRewardsClick)
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            FeatureMiniCard("Stocks", Icons.Default.TrendingUp, Emerald, Modifier.weight(1f), onInvestmentsClick)
+            FeatureMiniCard("Crypto", Icons.Default.CurrencyBitcoin, Color(0xFFF7931A), Modifier.weight(1f), onCryptoClick)
+            FeatureMiniCard("Rewards", Icons.Default.Star, Gold, Modifier.weight(1f), onRewardsClick)
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            FeatureMiniCard("Insurance", Icons.Default.Shield, Color.Red, Modifier.weight(1f), onInsuranceClick)
+            FeatureMiniCard("Business", Icons.Default.BusinessCenter, Color.Cyan, Modifier.weight(1f), onBusinessClick)
+            FeatureMiniCard("Lifestyle", Icons.Default.AirplaneTicket, Color.Magenta, Modifier.weight(1f), onLifestyleClick)
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            FeatureMiniCard("Loans", Icons.Default.AccountBalance, Gold, Modifier.weight(1f), onLoansClick)
+            FeatureMiniCard("Finder", Icons.Default.LocationOn, Color.Green, Modifier.weight(1f), onFinderClick)
+            FeatureMiniCard("Charity", Icons.Default.VolunteerActivism, Color.Red, Modifier.weight(1f), onCharityClick)
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            FeatureMiniCard("Family", Icons.Default.EscalatorWarning, Color.Cyan, Modifier.weight(1f), onFamilyClick)
+            FeatureMiniCard("Travel/FX", Icons.Default.FlightTakeoff, Gold, Modifier.weight(1f), onTravelClick)
+            FeatureMiniCard("Vault", Icons.Default.Lock, Color.LightGray, Modifier.weight(1f), onVaultClick)
+        }
+        
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+            FeatureMiniCard("Eco Tracker", Icons.Default.Eco, Color.Green, Modifier.weight(1f), onEcoClick)
+            FeatureMiniCard("Advanced Analytics", Icons.Default.BarChart, Gold, Modifier.weight(1f), onAnalyticsClick)
+        }
+        
+        Button(
+            onClick = onNewsClick,
+            modifier = Modifier.fillMaxWidth().height(60.dp),
+            shape = RoundedCornerShape(24.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.05f))
+        ) {
+            Icon(Icons.Default.Newspaper, contentDescription = null, tint = Gold)
+            Spacer(modifier = Modifier.width(12.dp))
+            Text("Latest Financial News", color = Color.White, fontWeight = FontWeight.Bold)
+        }
     }
 }
 
