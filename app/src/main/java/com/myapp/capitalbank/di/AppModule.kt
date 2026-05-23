@@ -14,6 +14,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
+/**
+ * Dependency Injection module providing singleton instances for the data layer.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
