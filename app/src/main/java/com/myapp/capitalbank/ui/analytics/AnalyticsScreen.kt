@@ -18,6 +18,10 @@ import com.myapp.capitalbank.ui.components.GlassCard
 import com.myapp.capitalbank.ui.theme.Gold
 import com.myapp.capitalbank.ui.theme.GradientStart
 
+/**
+ * A sophisticated analytics dashboard featuring custom interactive charts
+ * for spending distribution and cash flow analysis.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnalyticsScreen(onBackClick: () -> Unit) {
