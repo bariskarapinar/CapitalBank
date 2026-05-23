@@ -102,7 +102,7 @@ fun TransactionItem(transaction: Transaction) {
                 }
             }
             Text(
-                text = "${if (transaction.type == "Debit") "-" else "+"}$${String.format("%.2f", transaction.amount)}",
+                text = "${if (transaction.type == "Debit") "-" else "+"}$${String.format(Locale.US, "%.2f", transaction.amount)}",
                 color = if (transaction.type == "Debit") Crimson else Emerald,
                 fontWeight = FontWeight.Bold
             )
