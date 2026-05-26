@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Restaurant
@@ -21,10 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.myapp.capitalbank.data.model.Transaction
-import com.myapp.capitalbank.ui.components.GlassCard
-import com.myapp.capitalbank.ui.theme.Crimson
-import com.myapp.capitalbank.ui.theme.Emerald
-import com.myapp.capitalbank.ui.theme.GradientStart
+import com.myapp.capitalbank.ui.theme.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -39,16 +37,16 @@ fun AccountDetailsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Transactions", color = Color.White) },
+                title = { Text("Transactions", color = OnSurfaceLight) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null, tint = Color.White)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Go back", tint = OnSurfaceLight)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
             )
         },
-        containerColor = Color.Black
+        containerColor = BackgroundLight
     ) { padding ->
         LazyColumn(
             modifier = Modifier
@@ -56,7 +54,7 @@ fun AccountDetailsScreen(
                 .padding(padding)
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = listOf(GradientStart, Color.Black)
+                        colors = listOf(SkyBlue.copy(alpha = 0.2f), BackgroundLight)
                     )
                 ),
             contentPadding = PaddingValues(16.dp),
@@ -71,9 +69,14 @@ fun AccountDetailsScreen(
 
 @Composable
 fun TransactionItem(transaction: Transaction) {
-    GlassCard(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.padding(16.dp).fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -83,20 +86,25 @@ fun TransactionItem(transaction: Transaction) {
                     "Shopping" -> Icons.Default.ShoppingBag
                     else -> Icons.Default.SwapHoriz
                 }
+                val iconColor = when (transaction.category) {
+                    "Food" -> Gold
+                    "Shopping" -> PrimaryBlue
+                    else -> PrimaryGreen
+                }
                 Box(
                     modifier = Modifier
                         .size(40.dp)
-                        .background(Color.White.copy(alpha = 0.1f), MaterialTheme.shapes.small),
+                        .background(iconColor.copy(alpha = 0.1f), MaterialTheme.shapes.small),
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(icon, contentDescription = null, tint = Color.White, modifier = Modifier.size(20.dp))
+                    Icon(icon, contentDescription = null, tint = iconColor, modifier = Modifier.size(20.dp))
                 }
                 Spacer(modifier = Modifier.width(16.dp))
                 Column {
-                    Text(text = transaction.merchant, color = Color.White, fontWeight = FontWeight.Bold)
+                    Text(text = transaction.merchant, color = OnSurfaceLight, fontWeight = FontWeight.Bold)
                     Text(
-                        text = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(Date(transaction.timestamp)),
-                        color = Color.LightGray,
+                        text = SimpleDateFormat("MMM dd, yyyy", Locale.US).format(Date(transaction.timestamp)),
+                        color = Color.Gray,
                         style = MaterialTheme.typography.labelSmall
                     )
                 }
