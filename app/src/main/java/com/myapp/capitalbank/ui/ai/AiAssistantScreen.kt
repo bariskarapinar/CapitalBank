@@ -3,6 +3,7 @@ package com.myapp.capitalbank.ui.ai
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AutoAwesome
@@ -16,26 +17,27 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.myapp.capitalbank.ui.components.GlassCard
-import com.myapp.capitalbank.ui.theme.Gold
-import com.myapp.capitalbank.ui.theme.GradientStart
+import com.myapp.capitalbank.ui.theme.*
 
+/**
+ * AI-powered financial assistant providing smart insights and health scores.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AiAssistantScreen(onBackClick: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("CapAI Assistant", color = Color.White) },
+                title = { Text("CapAI Assistant", color = OnSurfaceLight) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null, tint = Color.White)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Go back", tint = OnSurfaceLight)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
             )
         },
-        containerColor = Color.Black
+        containerColor = BackgroundLight
     ) { padding ->
         LazyColumn(
             modifier = Modifier
@@ -43,7 +45,7 @@ fun AiAssistantScreen(onBackClick: () -> Unit) {
                 .padding(padding)
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = listOf(GradientStart, Color.Black)
+                        colors = listOf(PrimaryBlue.copy(alpha = 0.1f), BackgroundLight)
                     )
                 ),
             contentPadding = PaddingValues(16.dp),
@@ -54,7 +56,7 @@ fun AiAssistantScreen(onBackClick: () -> Unit) {
             }
             
             item {
-                Text("Smart Insights", style = MaterialTheme.typography.titleLarge, color = Color.White)
+                Text("Smart Insights", style = MaterialTheme.typography.titleLarge, color = OnSurfaceLight)
             }
             
             item {
@@ -62,7 +64,7 @@ fun AiAssistantScreen(onBackClick: () -> Unit) {
                     title = "Subscription Alert",
                     description = "You've spent 15% more on subscriptions this month compared to last.",
                     icon = Icons.Default.Insights,
-                    color = Color.Cyan
+                    color = PrimaryBlue
                 )
             }
             
@@ -71,7 +73,7 @@ fun AiAssistantScreen(onBackClick: () -> Unit) {
                     title = "Savings Opportunity",
                     description = "Moving $200 to your 'Vacation' goal now would put you 2 months ahead of schedule.",
                     icon = Icons.Default.Lightbulb,
-                    color = Gold
+                    color = PrimaryGreen
                 )
             }
             
@@ -79,8 +81,9 @@ fun AiAssistantScreen(onBackClick: () -> Unit) {
                 Button(
                     onClick = { /* TODO */ },
                     modifier = Modifier.fillMaxWidth().height(56.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.1f), contentColor = Color.White),
-                    shape = MaterialTheme.shapes.large
+                    colors = ButtonDefaults.buttonColors(containerColor = PrimaryBlue, contentColor = Color.White),
+                    shape = RoundedCornerShape(16.dp),
+                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
                 ) {
                     Icon(Icons.Default.AutoAwesome, contentDescription = null, tint = Gold)
                     Spacer(modifier = Modifier.width(8.dp))
@@ -93,20 +96,25 @@ fun AiAssistantScreen(onBackClick: () -> Unit) {
 
 @Composable
 fun AiHeaderSection() {
-    GlassCard(modifier = Modifier.fillMaxWidth()) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
+    ) {
+        Row(modifier = Modifier.padding(24.dp), verticalAlignment = Alignment.CenterVertically) {
             Box(
                 modifier = Modifier
                     .size(60.dp)
-                    .background(Gold.copy(alpha = 0.2f), MaterialTheme.shapes.medium),
+                    .background(PrimaryBlue.copy(alpha = 0.1f), MaterialTheme.shapes.medium),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(Icons.Default.AutoAwesome, contentDescription = null, tint = Gold, modifier = Modifier.size(32.dp))
+                Icon(Icons.Default.AutoAwesome, contentDescription = null, tint = PrimaryBlue, modifier = Modifier.size(32.dp))
             }
             Spacer(modifier = Modifier.width(16.dp))
             Column {
-                Text("AI Financial Health", color = Color.White, fontWeight = FontWeight.Bold)
-                Text("Your financial score: 840/1000", color = Color.LightGray, style = MaterialTheme.typography.labelSmall)
+                Text("AI Financial Health", color = OnSurfaceLight, fontWeight = FontWeight.Bold)
+                Text("Your financial score: 840/1000", color = Color.Gray, style = MaterialTheme.typography.labelSmall)
             }
         }
     }
@@ -114,14 +122,19 @@ fun AiHeaderSection() {
 
 @Composable
 fun InsightCard(title: String, description: String, icon: androidx.compose.ui.graphics.vector.ImageVector, color: Color) {
-    GlassCard(modifier = Modifier.fillMaxWidth()) {
-        Row(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Row(modifier = Modifier.padding(16.dp).fillMaxWidth()) {
             Icon(icon, contentDescription = null, tint = color)
             Spacer(modifier = Modifier.width(16.dp))
             Column {
-                Text(title, color = Color.White, fontWeight = FontWeight.Bold)
+                Text(title, color = OnSurfaceLight, fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(description, color = Color.LightGray, style = MaterialTheme.typography.bodySmall)
+                Text(description, color = Color.Gray, style = MaterialTheme.typography.bodySmall)
             }
         }
     }
