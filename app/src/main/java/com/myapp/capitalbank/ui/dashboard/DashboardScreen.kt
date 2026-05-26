@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -22,8 +23,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.myapp.capitalbank.ui.components.AppLogo
-import com.myapp.capitalbank.ui.components.GlassCard
 import com.myapp.capitalbank.ui.theme.*
+import java.util.Locale
 
 @Composable
 fun DashboardScreen(
@@ -49,72 +50,98 @@ fun DashboardScreen(
     onFamilyClick: () -> Unit,
     onTravelClick: () -> Unit,
     onVaultClick: () -> Unit,
-    onEcoClick: () -> Unit
+    onEcoClick: () -> Unit,
+    onAutoClick: () -> Unit,
+    onReitClick: () -> Unit,
+    onMetalsClick: () -> Unit,
+    onWellnessClick: () -> Unit,
+    onMarketClick: () -> Unit,
+    onArtClick: () -> Unit,
+    onYachtClick: () -> Unit,
+    onJetClick: () -> Unit,
+    onPhilanthropyClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     Scaffold(
-        containerColor = Color.Black
+        containerColor = BackgroundLight
     ) { padding ->
-        LazyColumn(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = listOf(GradientStart, Color.Black)
+                        colors = listOf(SkyBlue.copy(alpha = 0.4f), BackgroundLight)
                     )
-                ),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
+                )
         ) {
-            item {
-                HeaderSection(uiState.user?.name ?: "User", onCheckDepositClick)
-            }
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp),
+                contentPadding = PaddingValues(
+                    top = padding.calculateTopPadding() + 16.dp,
+                    bottom = padding.calculateBottomPadding() + 16.dp
+                ),
+                verticalArrangement = Arrangement.spacedBy(24.dp)
+            ) {
+                item {
+                    HeaderSection(uiState.user?.name ?: "User", onCheckDepositClick)
+                }
 
-            item {
-                BalanceCard(uiState.accounts.sumOf { it.balance })
-            }
+                item {
+                    BalanceCard(uiState.accounts.sumOf { it.balance }, onAccountClick = { onAccountClick("total") })
+                }
 
-            item {
-                QuickActionsSection(
-                    onTransfersClick = onTransfersClick,
-                    onCardsClick = onCardsClick,
-                    onBudgetClick = onBudgetClick,
-                    onMoreClick = onAiAssistantClick
-                )
-            }
+                item {
+                    QuickActionsSection(
+                        onTransfersClick = onTransfersClick,
+                        onCardsClick = onCardsClick,
+                        onBudgetClick = onBudgetClick,
+                        onMoreClick = onAiAssistantClick
+                    )
+                }
 
-            item {
-                ExtraFeaturesSection(
-                    onInvestmentsClick = onInvestmentsClick,
-                    onCryptoClick = onCryptoClick,
-                    onRewardsClick = onRewardsClick,
-                    onInsuranceClick = onInsuranceClick,
-                    onBusinessClick = onBusinessClick,
-                    onLifestyleClick = onLifestyleClick,
-                    onAnalyticsClick = onAnalyticsClick,
-                    onLoansClick = onLoansClick,
-                    onFinderClick = onFinderClick,
-                    onCharityClick = onCharityClick,
-                    onNewsClick = onNewsClick,
-                    onFamilyClick = onFamilyClick,
-                    onTravelClick = onTravelClick,
-                    onVaultClick = onVaultClick,
-                    onEcoClick = onEcoClick
-                )
-            }
+                item {
+                    ExtraFeaturesSection(
+                        onInvestmentsClick = onInvestmentsClick,
+                        onCryptoClick = onCryptoClick,
+                        onRewardsClick = onRewardsClick,
+                        onInsuranceClick = onInsuranceClick,
+                        onBusinessClick = onBusinessClick,
+                        onLifestyleClick = onLifestyleClick,
+                        onAnalyticsClick = onAnalyticsClick,
+                        onLoansClick = onLoansClick,
+                        onFinderClick = onFinderClick,
+                        onCharityClick = onCharityClick,
+                        onNewsClick = onNewsClick,
+                        onFamilyClick = onFamilyClick,
+                        onTravelClick = onTravelClick,
+                        onVaultClick = onVaultClick,
+                        onEcoClick = onEcoClick,
+                        onAutoClick = onAutoClick,
+                        onReitClick = onReitClick,
+                        onMetalsClick = onMetalsClick,
+                        onWellnessClick = onWellnessClick,
+                        onMarketClick = onMarketClick,
+                        onArtClick = onArtClick,
+                        onYachtClick = onYachtClick,
+                        onJetClick = onJetClick,
+                        onPhilanthropyClick = onPhilanthropyClick
+                    )
+                }
 
-            item {
-                Text(
-                    text = "My Accounts",
-                    style = MaterialTheme.typography.titleLarge,
-                    color = Color.White
-                )
-            }
+                item {
+                    Text(
+                        text = "My Accounts",
+                        style = MaterialTheme.typography.titleLarge,
+                        color = OnSurfaceLight
+                    )
+                }
 
-            items(uiState.accounts) { account ->
-                AccountItem(account, onAccountClick)
+                items(uiState.accounts) { account ->
+                    AccountItem(account, onAccountClick)
+                }
             }
         }
     }
@@ -131,12 +158,12 @@ fun HeaderSection(userName: String, onCheckDepositClick: () -> Unit) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AppLogo(size = 32.dp)
+            AppLogo(size = 32.dp, textColor = OnSurfaceLight)
             IconButton(
                 onClick = onCheckDepositClick,
-                modifier = Modifier.background(Color.White.copy(alpha = 0.1f), MaterialTheme.shapes.medium)
+                modifier = Modifier.background(PrimaryBlue.copy(alpha = 0.1f), MaterialTheme.shapes.medium)
             ) {
-                Icon(Icons.Default.CameraAlt, contentDescription = null, tint = Color.White)
+                Icon(Icons.Default.CameraAlt, contentDescription = null, tint = PrimaryBlue)
             }
         }
 
@@ -144,12 +171,12 @@ fun HeaderSection(userName: String, onCheckDepositClick: () -> Unit) {
             Text(
                 text = "Welcome back,",
                 style = MaterialTheme.typography.bodyLarge,
-                color = Color.LightGray
+                color = Color.Gray
             )
             Text(
                 text = userName,
                 style = MaterialTheme.typography.headlineMedium,
-                color = Color.White,
+                color = OnSurfaceLight,
                 fontWeight = FontWeight.Bold
             )
         }
@@ -157,37 +184,52 @@ fun HeaderSection(userName: String, onCheckDepositClick: () -> Unit) {
 }
 
 @Composable
-fun BalanceCard(totalBalance: Double) {
-    GlassCard(
+fun BalanceCard(totalBalance: Double, onAccountClick: () -> Unit) {
+    Button(
+        onClick = onAccountClick,
         modifier = Modifier
             .fillMaxWidth()
-            .height(180.dp)
+            .height(180.dp),
+        shape = RoundedCornerShape(24.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+        contentPadding = PaddingValues(0.dp)
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = "Total Balance",
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.LightGray
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = "$${String.format("%.2f", totalBalance)}",
-                style = MaterialTheme.typography.headlineLarge,
-                color = Gold,
-                fontWeight = FontWeight.ExtraBold,
-                fontSize = 36.sp
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.TrendingUp, contentDescription = null, tint = Color.Green, modifier = Modifier.size(16.dp))
-                Text(
-                    text = " +2.5% from last month",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = Color.Green
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    brush = Brush.linearGradient(
+                        colors = listOf(PrimaryGreen, PrimaryBlue)
+                    )
                 )
+                .padding(24.dp)
+        ) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "Total Balance",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.White.copy(alpha = 0.8f)
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "$${String.format(Locale.US, "%.2f", totalBalance)}",
+                    style = MaterialTheme.typography.headlineLarge,
+                    color = Color.White,
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 36.sp
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.AutoMirrored.Filled.TrendingUp, contentDescription = "Trend Up Indicator", tint = Color.White, modifier = Modifier.size(16.dp))
+                    Text(
+                        text = " +2.5% from last month",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = Color.White
+                    )
+                }
             }
         }
     }
@@ -204,10 +246,10 @@ fun QuickActionsSection(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        QuickActionItem("Send", Icons.AutoMirrored.Filled.Send, Gold, onTransfersClick)
-        QuickActionItem("Cards", Icons.Default.Payment, Color.Cyan, onCardsClick)
-        QuickActionItem("Budget", Icons.Default.PieChart, Color.Magenta, onBudgetClick)
-        QuickActionItem("AI Assistant", Icons.Default.AutoAwesome, Gold, onMoreClick)
+        QuickActionItem("Send", Icons.AutoMirrored.Filled.Send, PrimaryGreen, onTransfersClick)
+        QuickActionItem("Cards", Icons.Default.Payment, PrimaryBlue, onCardsClick)
+        QuickActionItem("Budget", Icons.Default.PieChart, AccentTeal, onBudgetClick)
+        QuickActionItem("AI Assistant", Icons.Default.AutoAwesome, NeonPurple, onMoreClick)
     }
 }
 
@@ -221,12 +263,12 @@ fun QuickActionItem(label: String, icon: ImageVector, color: Color, onClick: () 
             onClick = onClick,
             modifier = Modifier.size(60.dp),
             shape = RoundedCornerShape(16.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = color.copy(alpha = 0.15f)),
+            colors = ButtonDefaults.buttonColors(containerColor = color.copy(alpha = 0.1f)),
             contentPadding = PaddingValues(0.dp)
         ) {
             Icon(icon, contentDescription = label, tint = color, modifier = Modifier.size(28.dp))
         }
-        Text(text = label, style = MaterialTheme.typography.labelMedium, color = Color.White)
+        Text(text = label, style = MaterialTheme.typography.labelMedium, color = OnSurfaceLight)
     }
 }
 
@@ -246,14 +288,23 @@ fun ExtraFeaturesSection(
     onFamilyClick: () -> Unit,
     onTravelClick: () -> Unit,
     onVaultClick: () -> Unit,
-    onEcoClick: () -> Unit
+    onEcoClick: () -> Unit,
+    onAutoClick: () -> Unit,
+    onReitClick: () -> Unit,
+    onMetalsClick: () -> Unit,
+    onWellnessClick: () -> Unit,
+    onMarketClick: () -> Unit,
+    onArtClick: () -> Unit,
+    onYachtClick: () -> Unit,
+    onJetClick: () -> Unit,
+    onPhilanthropyClick: () -> Unit
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            FeatureMiniCard("Stocks", Icons.Default.TrendingUp, Emerald, Modifier.weight(1f), onInvestmentsClick)
+            FeatureMiniCard("Stocks", Icons.AutoMirrored.Filled.TrendingUp, PrimaryGreen, Modifier.weight(1f), onInvestmentsClick)
             FeatureMiniCard("Crypto", Icons.Default.CurrencyBitcoin, Color(0xFFF7931A), Modifier.weight(1f), onCryptoClick)
             FeatureMiniCard("Rewards", Icons.Default.Star, Gold, Modifier.weight(1f), onRewardsClick)
         }
@@ -261,41 +312,65 @@ fun ExtraFeaturesSection(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            FeatureMiniCard("Insurance", Icons.Default.Shield, Color.Red, Modifier.weight(1f), onInsuranceClick)
-            FeatureMiniCard("Business", Icons.Default.BusinessCenter, Color.Cyan, Modifier.weight(1f), onBusinessClick)
-            FeatureMiniCard("Lifestyle", Icons.Default.AirplaneTicket, Color.Magenta, Modifier.weight(1f), onLifestyleClick)
+            FeatureMiniCard("Insurance", Icons.Default.Shield, Crimson, Modifier.weight(1f), onInsuranceClick)
+            FeatureMiniCard("Business", Icons.Default.BusinessCenter, PrimaryBlue, Modifier.weight(1f), onBusinessClick)
+            FeatureMiniCard("Lifestyle", Icons.Default.AirplaneTicket, NeonPurple, Modifier.weight(1f), onLifestyleClick)
         }
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            FeatureMiniCard("Loans", Icons.Default.AccountBalance, Gold, Modifier.weight(1f), onLoansClick)
-            FeatureMiniCard("Finder", Icons.Default.LocationOn, Color.Green, Modifier.weight(1f), onFinderClick)
-            FeatureMiniCard("Charity", Icons.Default.VolunteerActivism, Color.Red, Modifier.weight(1f), onCharityClick)
+            FeatureMiniCard("Loans", Icons.Default.AccountBalance, AccentGold, Modifier.weight(1f), onLoansClick)
+            FeatureMiniCard("Finder", Icons.Default.LocationOn, Emerald, Modifier.weight(1f), onFinderClick)
+            FeatureMiniCard("Charity", Icons.Default.VolunteerActivism, Crimson, Modifier.weight(1f), onCharityClick)
         }
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            FeatureMiniCard("Family", Icons.Default.EscalatorWarning, Color.Cyan, Modifier.weight(1f), onFamilyClick)
+            FeatureMiniCard("Family", Icons.Default.EscalatorWarning, ElectricBlue, Modifier.weight(1f), onFamilyClick)
             FeatureMiniCard("Travel/FX", Icons.Default.FlightTakeoff, Gold, Modifier.weight(1f), onTravelClick)
-            FeatureMiniCard("Vault", Icons.Default.Lock, Color.LightGray, Modifier.weight(1f), onVaultClick)
+            FeatureMiniCard("Vault", Icons.Default.Lock, Color.Gray, Modifier.weight(1f), onVaultClick)
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            FeatureMiniCard("Auto Lease", Icons.Default.DirectionsCar, Crimson, Modifier.weight(1f), onAutoClick)
+            FeatureMiniCard("REITs", Icons.Default.LocationCity, Emerald, Modifier.weight(1f), onReitClick)
+            FeatureMiniCard("Metals", Icons.Default.Diamond, Gold, Modifier.weight(1f), onMetalsClick)
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            FeatureMiniCard("Wellness", Icons.Default.Spa, NeonPurple, Modifier.weight(1f), onWellnessClick)
+            FeatureMiniCard("Market", Icons.Default.LocalMall, ElectricBlue, Modifier.weight(1f), onMarketClick)
+            FeatureMiniCard("Art", Icons.Default.ColorLens, Gold, Modifier.weight(1f), onArtClick)
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            FeatureMiniCard("Yachts", Icons.Default.DirectionsBoat, PrimaryBlue, Modifier.weight(1f), onYachtClick)
+            FeatureMiniCard("Jets", Icons.Default.Flight, PrimaryGreen, Modifier.weight(1f), onJetClick)
+            FeatureMiniCard("Endowment", Icons.Default.Public, Gold, Modifier.weight(1f), onPhilanthropyClick)
         }
         
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            FeatureMiniCard("Eco Tracker", Icons.Default.Eco, Color.Green, Modifier.weight(1f), onEcoClick)
-            FeatureMiniCard("Advanced Analytics", Icons.Default.BarChart, Gold, Modifier.weight(1f), onAnalyticsClick)
+            FeatureMiniCard("Eco Tracker", Icons.Default.Eco, PrimaryGreen, Modifier.weight(1f), onEcoClick)
+            FeatureMiniCard("Analytics", Icons.Default.BarChart, PrimaryBlue, Modifier.weight(1f), onAnalyticsClick)
         }
         
         Button(
             onClick = onNewsClick,
             modifier = Modifier.fillMaxWidth().height(60.dp),
             shape = RoundedCornerShape(24.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.05f))
+            colors = ButtonDefaults.buttonColors(containerColor = PrimaryBlue.copy(alpha = 0.1f))
         ) {
-            Icon(Icons.Default.Newspaper, contentDescription = null, tint = Gold)
+            Icon(Icons.Default.Newspaper, contentDescription = null, tint = PrimaryBlue)
             Spacer(modifier = Modifier.width(12.dp))
-            Text("Latest Financial News", color = Color.White, fontWeight = FontWeight.Bold)
+            Text("Latest Financial News", color = PrimaryBlue, fontWeight = FontWeight.Bold)
         }
     }
 }
@@ -306,13 +381,14 @@ fun FeatureMiniCard(label: String, icon: ImageVector, color: Color, modifier: Mo
         onClick = onClick,
         modifier = modifier.height(100.dp),
         shape = RoundedCornerShape(24.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.05f)),
+        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+        elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp),
         contentPadding = PaddingValues(0.dp)
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
             Icon(icon, contentDescription = label, tint = color, modifier = Modifier.size(28.dp))
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = label, style = MaterialTheme.typography.labelMedium, color = Color.White)
+            Text(text = label, style = MaterialTheme.typography.labelMedium, color = OnSurfaceLight)
         }
     }
 }
@@ -322,25 +398,26 @@ fun AccountItem(account: com.myapp.capitalbank.data.model.Account, onClick: (Str
     Button(
         onClick = { onClick(account.id) },
         modifier = Modifier.fillMaxWidth(),
-        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-        contentPadding = PaddingValues(0.dp)
+        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+        elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp),
+        contentPadding = PaddingValues(16.dp),
+        shape = RoundedCornerShape(24.dp)
     ) {
-        GlassCard(modifier = Modifier.fillMaxWidth()) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column {
-                    Text(text = account.accountType, color = Color.White, fontWeight = FontWeight.Bold)
-                    Text(text = "**** ${account.accountNumber.takeLast(4)}", color = Color.LightGray, style = MaterialTheme.typography.bodySmall)
-                }
-                Text(
-                    text = "$${String.format("%.2f", account.balance)}",
-                    color = Color.White,
-                    style = MaterialTheme.typography.titleLarge
-                )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column {
+                Text(text = account.accountType, color = OnSurfaceLight, fontWeight = FontWeight.Bold)
+                Text(text = "**** ${account.accountNumber.takeLast(4)}", color = Color.Gray, style = MaterialTheme.typography.bodySmall)
             }
+            Text(
+                text = "$${String.format(Locale.US, "%.2f", account.balance)}",
+                color = PrimaryBlue,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }
