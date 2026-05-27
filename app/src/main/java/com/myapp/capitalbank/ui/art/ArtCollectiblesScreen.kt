@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ColorLens
@@ -18,9 +19,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.myapp.capitalbank.ui.components.GlassCard
-import com.myapp.capitalbank.ui.theme.Gold
-import com.myapp.capitalbank.ui.theme.GradientStart
+import com.myapp.capitalbank.ui.theme.*
 
 /**
  * A private digital gallery for tracking investment-grade fine art and collectibles.
@@ -31,16 +30,16 @@ fun ArtCollectiblesScreen(onBackClick: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Fine Art & Collectibles", color = Color.White) },
+                title = { Text("Fine Art & Collectibles", color = OnSurfaceLight) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null, tint = Color.White)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Go back", tint = OnSurfaceLight)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
             )
         },
-        containerColor = Color.Black
+        containerColor = BackgroundLight
     ) { padding ->
         LazyColumn(
             modifier = Modifier
@@ -48,7 +47,7 @@ fun ArtCollectiblesScreen(onBackClick: () -> Unit) {
                 .padding(padding)
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = listOf(Color(0xFF212121), Color(0xFF424242), Color.Black)
+                        colors = listOf(Gold.copy(alpha = 0.05f), BackgroundLight)
                     )
                 ),
             contentPadding = PaddingValues(16.dp),
@@ -59,7 +58,7 @@ fun ArtCollectiblesScreen(onBackClick: () -> Unit) {
             }
             
             item {
-                Text("Your Collection", style = MaterialTheme.typography.titleLarge, color = Color.White)
+                Text("Your Collection", style = MaterialTheme.typography.titleLarge, color = OnSurfaceLight)
             }
             
             val artworks = listOf(
@@ -79,14 +78,19 @@ data class ArtData(val title: String, val artist: String, val value: String, val
 
 @Composable
 fun ArtHeader() {
-    GlassCard(modifier = Modifier.fillMaxWidth()) {
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Column(modifier = Modifier.padding(24.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.Museum, contentDescription = null, tint = Gold)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Private Art Vault", color = Color.White, fontWeight = FontWeight.Bold)
+                Text("Private Art Vault", color = OnSurfaceLight, fontWeight = FontWeight.Bold)
             }
-            Text("Investment Grade Assets", color = Color.LightGray, style = MaterialTheme.typography.labelSmall)
+            Text("Investment Grade Assets", color = Color.Gray, style = MaterialTheme.typography.labelSmall)
             Text("$415K Total Value", color = Gold, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
         }
     }
@@ -94,27 +98,32 @@ fun ArtHeader() {
 
 @Composable
 fun ArtCard(art: ArtData) {
-    GlassCard(modifier = Modifier.fillMaxWidth().height(150.dp)) {
+    Card(
+        modifier = Modifier.fillMaxWidth().height(150.dp),
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(
                         Brush.radialGradient(
-                            colors = listOf(art.color.copy(alpha = 0.15f), Color.Transparent),
-                            radius = 300f
+                            colors = listOf(art.color.copy(alpha = 0.05f), Color.Transparent),
+                            radius = 400f
                         )
                     )
             )
             
-            Column(modifier = Modifier.align(Alignment.CenterStart)) {
-                Text(art.title, color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                Text("by ${art.artist}", color = Color.LightGray, fontStyle = FontStyle.Italic)
+            Column(modifier = Modifier.align(Alignment.CenterStart).padding(16.dp)) {
+                Text(art.title, color = OnSurfaceLight, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Text("by ${art.artist}", color = Color.Gray, fontStyle = FontStyle.Italic)
             }
             
-            Column(modifier = Modifier.align(Alignment.CenterEnd), horizontalAlignment = Alignment.End) {
-                Text("Estimated Value", color = Color.LightGray, style = MaterialTheme.typography.labelSmall)
-                Text(art.value, color = Color.White, fontWeight = FontWeight.ExtraBold, fontSize = 18.sp)
+            Column(modifier = Modifier.align(Alignment.CenterEnd).padding(16.dp), horizontalAlignment = Alignment.End) {
+                Text("Estimated Value", color = Color.Gray, style = MaterialTheme.typography.labelSmall)
+                Text(art.value, color = OnSurfaceLight, fontWeight = FontWeight.ExtraBold, fontSize = 18.sp)
                 Icon(Icons.Default.ColorLens, contentDescription = null, tint = art.color, modifier = Modifier.size(24.dp))
             }
         }
