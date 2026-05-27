@@ -7,7 +7,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CurrencyExchange
 import androidx.compose.material.icons.filled.FlightTakeoff
-import androidx.compose.material.icons.filled.Public
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,6 +19,9 @@ import com.myapp.capitalbank.ui.components.GlassCard
 import com.myapp.capitalbank.ui.theme.Gold
 import com.myapp.capitalbank.ui.theme.GradientStart
 
+/**
+ * A travel-centric hub for managing foreign currency accounts and FX operations.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TravelScreen(onBackClick: () -> Unit) {
@@ -82,7 +84,7 @@ fun TravelHeader() {
     GlassCard(modifier = Modifier.fillMaxWidth()) {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.FlightTakeoff, contentDescription = null, tint = Gold)
+                Icon(Icons.Default.FlightTakeoff, contentDescription = "Flight Icon", tint = Gold)
                 Spacer(modifier = Modifier.width(8.dp))
                 Text("Travel Mode: Active", color = Color.White, fontWeight = FontWeight.Bold)
             }
