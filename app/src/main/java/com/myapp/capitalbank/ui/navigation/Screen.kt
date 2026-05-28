@@ -1,8 +1,13 @@
 package com.myapp.capitalbank.ui.navigation
 
+/**
+ * Defines all navigation routes within the Capital Bank application.
+ * Each object represents a unique screen or functional module.
+ */
 sealed class Screen(val route: String) {
     object Login : Screen("login")
     object Dashboard : Screen("dashboard")
+    object DetailedBalance : Screen("detailed_balance")
     object AccountDetails : Screen("account_details/{accountId}") {
         fun createRoute(accountId: String) = "account_details/$accountId"
     }
@@ -27,4 +32,13 @@ sealed class Screen(val route: String) {
     object Travel : Screen("travel")
     object Vault : Screen("vault")
     object Eco : Screen("eco")
+    object AutoLeasing : Screen("auto_leasing")
+    object Reit : Screen("reit")
+    object GoldMetals : Screen("gold_metals")
+    object Wellness : Screen("wellness")
+    object Marketplace : Screen("marketplace")
+    object ArtCollectibles : Screen("art_collectibles")
+    object YachtFinancing : Screen("yacht_financing")
+    object PrivateJets : Screen("private_jets")
+    object Philanthropy : Screen("philanthropy")
 }
