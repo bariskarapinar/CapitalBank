@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.DirectionsCar
@@ -19,9 +20,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.myapp.capitalbank.ui.components.GlassCard
-import com.myapp.capitalbank.ui.theme.Gold
-import com.myapp.capitalbank.ui.theme.GradientStart
+import com.myapp.capitalbank.ui.theme.*
 
 /**
  * Exclusive automotive portal for browsing and leasing luxury vehicles.
@@ -32,16 +31,16 @@ fun AutoLeasingScreen(onBackClick: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Luxury Auto Leasing", color = Color.White) },
+                title = { Text("Luxury Auto Leasing", color = OnSurfaceLight) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null, tint = Color.White)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Go back", tint = OnSurfaceLight)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
             )
         },
-        containerColor = Color.Black
+        containerColor = BackgroundLight
     ) { padding ->
         LazyColumn(
             modifier = Modifier
@@ -49,7 +48,7 @@ fun AutoLeasingScreen(onBackClick: () -> Unit) {
                 .padding(padding)
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = listOf(Color(0xFF1A237E), Color(0xFFC62828), Color.Black)
+                        colors = listOf(PrimaryBlue.copy(alpha = 0.1f), BackgroundLight)
                     )
                 ),
             contentPadding = PaddingValues(16.dp),
@@ -59,15 +58,15 @@ fun AutoLeasingScreen(onBackClick: () -> Unit) {
                 Text(
                     "Elite Vehicle Collection",
                     style = MaterialTheme.typography.headlineMedium,
-                    color = Color.White,
+                    color = OnSurfaceLight,
                     fontWeight = FontWeight.ExtraBold
                 )
             }
             
             val cars = listOf(
-                CarData("Porsche 911 GT3", "$2,450/mo", Icons.Default.Speed, Color.Red),
-                CarData("Tesla Model S Plaid", "$1,850/mo", Icons.Default.ElectricCar, Color.Cyan),
-                CarData("Range Rover Autobiography", "$3,100/mo", Icons.Default.DirectionsCar, Gold)
+                CarData("Porsche 911 GT3", "$2,450/mo", Icons.Default.Speed, Crimson),
+                CarData("Tesla Model S Plaid", "$1,850/mo", Icons.Default.ElectricCar, PrimaryBlue),
+                CarData("Range Rover Autobiography", "$3,100/mo", Icons.Default.DirectionsCar, PrimaryGreen)
             )
             
             items(cars) { car ->
@@ -81,23 +80,28 @@ data class CarData(val name: String, val price: String, val icon: ImageVector, v
 
 @Composable
 fun LuxuryCarCard(car: CarData) {
-    GlassCard(modifier = Modifier.fillMaxWidth().height(180.dp)) {
-        Box(modifier = Modifier.fillMaxSize()) {
+    Card(
+        modifier = Modifier.fillMaxWidth().height(180.dp),
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Box(modifier = Modifier.fillMaxSize().padding(16.dp)) {
             Column(modifier = Modifier.align(Alignment.TopStart)) {
-                Text(car.name, color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Bold)
-                Text("Zero down payment for Obsidian members", color = car.accentColor, style = MaterialTheme.typography.labelSmall)
+                Text(car.name, color = OnSurfaceLight, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+                Text("Zero down payment for Obsidian members", color = car.accentColor, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
             }
             
             Icon(
                 car.icon,
                 contentDescription = null,
-                tint = car.accentColor.copy(alpha = 0.3f),
+                tint = car.accentColor.copy(alpha = 0.05f),
                 modifier = Modifier.size(120.dp).align(Alignment.BottomEnd).offset(x = 20.dp, y = 20.dp)
             )
             
             Column(modifier = Modifier.align(Alignment.BottomStart)) {
-                Text("Starting from", color = Color.LightGray, style = MaterialTheme.typography.labelSmall)
-                Text(car.price, color = Gold, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
+                Text("Starting from", color = Color.Gray, style = MaterialTheme.typography.labelSmall)
+                Text(car.price, color = PrimaryBlue, fontSize = 24.sp, fontWeight = FontWeight.ExtraBold)
             }
         }
     }
