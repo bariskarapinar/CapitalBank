@@ -9,6 +9,10 @@ import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * The primary data gateway for the application.
+ * Manages the flow of data between the local Room database and (mocked) remote services.
+ */
 @Singleton
 class BankRepository @Inject constructor(
     private val bankDao: BankDao
