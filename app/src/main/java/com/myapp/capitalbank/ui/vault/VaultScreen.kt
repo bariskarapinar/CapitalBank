@@ -3,6 +3,7 @@ package com.myapp.capitalbank.ui.vault
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Description
@@ -16,26 +17,27 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.myapp.capitalbank.ui.components.GlassCard
-import com.myapp.capitalbank.ui.theme.Gold
-import com.myapp.capitalbank.ui.theme.GradientStart
+import com.myapp.capitalbank.ui.theme.*
 
+/**
+ * A highly secure digital storage module for sensitive personal documents.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun VaultScreen(onBackClick: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Secure Digital Vault", color = Color.White) },
+                title = { Text("Secure Digital Vault", color = OnSurfaceLight) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null, tint = Color.White)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Go back", tint = OnSurfaceLight)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
             )
         },
-        containerColor = Color.Black
+        containerColor = BackgroundLight
     ) { padding ->
         LazyColumn(
             modifier = Modifier
@@ -43,7 +45,7 @@ fun VaultScreen(onBackClick: () -> Unit) {
                 .padding(padding)
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = listOf(GradientStart, Color.Black)
+                        colors = listOf(PrimaryBlue.copy(alpha = 0.1f), BackgroundLight)
                     )
                 ),
             contentPadding = PaddingValues(16.dp),
@@ -54,19 +56,20 @@ fun VaultScreen(onBackClick: () -> Unit) {
             }
             
             item {
-                Text("Stored Documents", style = MaterialTheme.typography.titleLarge, color = Color.White)
+                Text("Stored Documents", style = MaterialTheme.typography.titleLarge, color = OnSurfaceLight)
             }
             
-            item { VaultDocumentItem("Passport Copy", "Uploaded May 12, 2026", Icons.Default.PictureAsPdf, Color.Red) }
-            item { VaultDocumentItem("Property Deed", "Uploaded April 05, 2026", Icons.Default.Description, Color.Cyan) }
+            item { VaultDocumentItem("Passport Copy", "Uploaded May 12, 2026", Icons.Default.PictureAsPdf, Crimson) }
+            item { VaultDocumentItem("Property Deed", "Uploaded April 05, 2026", Icons.Default.Description, PrimaryBlue) }
             item { VaultDocumentItem("Tax Certificate", "Uploaded March 22, 2026", Icons.Default.Description, Gold) }
             
             item {
                 Button(
                     onClick = { /* TODO */ },
                     modifier = Modifier.fillMaxWidth().height(56.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Gold, contentColor = Color.Black),
-                    shape = MaterialTheme.shapes.large
+                    colors = ButtonDefaults.buttonColors(containerColor = PrimaryBlue, contentColor = Color.White),
+                    shape = RoundedCornerShape(16.dp),
+                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
                 ) {
                     Icon(Icons.Default.Lock, contentDescription = null)
                     Spacer(modifier = Modifier.width(8.dp))
@@ -79,30 +82,40 @@ fun VaultScreen(onBackClick: () -> Unit) {
 
 @Composable
 fun VaultHeader() {
-    GlassCard(modifier = Modifier.fillMaxWidth()) {
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text("Vault Security: Ultra", color = Color.Green, fontWeight = FontWeight.Bold)
-            Text("256-bit encryption active. Your documents are only accessible by you.", color = Color.LightGray, style = MaterialTheme.typography.bodySmall)
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
+    ) {
+        Column(modifier = Modifier.padding(24.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text("Vault Security: Ultra", color = PrimaryGreen, fontWeight = FontWeight.Bold)
+            Text("256-bit encryption active. Your documents are only accessible by you.", color = Color.Gray, style = MaterialTheme.typography.bodySmall)
         }
     }
 }
 
 @Composable
 fun VaultDocumentItem(name: String, date: String, icon: androidx.compose.ui.graphics.vector.ImageVector, color: Color) {
-    GlassCard(modifier = Modifier.fillMaxWidth()) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
             Box(
                 modifier = Modifier
                     .size(45.dp)
-                    .background(color.copy(alpha = 0.2f), MaterialTheme.shapes.medium),
+                    .background(color.copy(alpha = 0.1f), MaterialTheme.shapes.medium),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(icon, contentDescription = null, tint = color)
             }
             Spacer(modifier = Modifier.width(16.dp))
             Column {
-                Text(name, color = Color.White, fontWeight = FontWeight.Bold)
-                Text(date, color = Color.LightGray, style = MaterialTheme.typography.labelSmall)
+                Text(name, color = OnSurfaceLight, fontWeight = FontWeight.Bold)
+                Text(date, color = Color.Gray, style = MaterialTheme.typography.labelSmall)
             }
         }
     }
