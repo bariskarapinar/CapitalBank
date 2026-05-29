@@ -3,6 +3,7 @@ package com.myapp.capitalbank.ui.eco
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Eco
@@ -15,26 +16,27 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.myapp.capitalbank.ui.components.GlassCard
-import com.myapp.capitalbank.ui.theme.Gold
-import com.myapp.capitalbank.ui.theme.GradientStart
+import com.myapp.capitalbank.ui.theme.*
 
+/**
+ * Tracks and visualizes the user's environmental impact based on financial activity.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EcoScreen(onBackClick: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Eco-Footprint Tracker", color = Color.White) },
+                title = { Text("Eco-Footprint Tracker", color = OnSurfaceLight) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null, tint = Color.White)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Go back", tint = OnSurfaceLight)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
             )
         },
-        containerColor = Color.Black
+        containerColor = BackgroundLight
     ) { padding ->
         LazyColumn(
             modifier = Modifier
@@ -42,7 +44,7 @@ fun EcoScreen(onBackClick: () -> Unit) {
                 .padding(padding)
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = listOf(GradientStart, Color.Black)
+                        colors = listOf(PrimaryGreen.copy(alpha = 0.1f), BackgroundLight)
                     )
                 ),
             contentPadding = PaddingValues(16.dp),
@@ -53,19 +55,20 @@ fun EcoScreen(onBackClick: () -> Unit) {
             }
             
             item {
-                Text("Spending Impact", style = MaterialTheme.typography.titleLarge, color = Color.White)
+                Text("Spending Impact", style = MaterialTheme.typography.titleLarge, color = OnSurfaceLight)
             }
             
-            item { EcoImpactCard("Transport", "120kg CO2", 0.4f, Color.Cyan) }
-            item { EcoImpactCard("Food & Dining", "85kg CO2", 0.3f, Gold) }
-            item { EcoImpactCard("Shopping", "210kg CO2", 0.7f, Color.Magenta) }
+            item { EcoImpactCard("Transport", "120kg CO2", 0.4f, PrimaryBlue) }
+            item { EcoImpactCard("Food & Dining", "85kg CO2", 0.3f, PrimaryGreen) }
+            item { EcoImpactCard("Shopping", "210kg CO2", 0.7f, NeonPurple) }
             
             item {
                 Button(
                     onClick = { /* TODO */ },
                     modifier = Modifier.fillMaxWidth().height(56.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2E7D32), contentColor = Color.White),
-                    shape = MaterialTheme.shapes.large
+                    colors = ButtonDefaults.buttonColors(containerColor = PrimaryGreen, contentColor = Color.White),
+                    shape = RoundedCornerShape(16.dp),
+                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
                 ) {
                     Icon(Icons.Default.Park, contentDescription = null)
                     Spacer(modifier = Modifier.width(8.dp))
@@ -78,32 +81,42 @@ fun EcoScreen(onBackClick: () -> Unit) {
 
 @Composable
 fun EcoHeader() {
-    GlassCard(modifier = Modifier.fillMaxWidth()) {
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
+    ) {
+        Column(modifier = Modifier.padding(24.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.Eco, contentDescription = null, tint = Color.Green)
+                Icon(Icons.Default.Eco, contentDescription = null, tint = PrimaryGreen)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Carbon Neutral Score", color = Color.White, fontWeight = FontWeight.Bold)
+                Text("Carbon Neutral Score", color = OnSurfaceLight, fontWeight = FontWeight.Bold)
             }
-            Text("85/100", color = Color.Green, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.ExtraBold)
-            Text("You are in the top 5% of eco-friendly spenders.", color = Color.LightGray, style = MaterialTheme.typography.bodySmall)
+            Text("85/100", color = PrimaryGreen, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.ExtraBold)
+            Text("You are in the top 5% of eco-friendly spenders.", color = Color.Gray, style = MaterialTheme.typography.bodySmall)
         }
     }
 }
 
 @Composable
 fun EcoImpactCard(category: String, amount: String, progress: Float, color: Color) {
-    GlassCard(modifier = Modifier.fillMaxWidth()) {
-        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(category, color = Color.White, fontWeight = FontWeight.Bold)
-                Text(amount, color = Color.LightGray, style = MaterialTheme.typography.labelSmall)
+                Text(category, color = OnSurfaceLight, fontWeight = FontWeight.Bold)
+                Text(amount, color = Color.Gray, style = MaterialTheme.typography.labelSmall)
             }
             LinearProgressIndicator(
                 progress = { progress },
                 modifier = Modifier.fillMaxWidth().height(6.dp),
                 color = color,
-                trackColor = Color.White.copy(alpha = 0.1f)
+                trackColor = color.copy(alpha = 0.1f)
             )
         }
     }
