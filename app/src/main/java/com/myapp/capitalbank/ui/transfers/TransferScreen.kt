@@ -3,10 +3,10 @@ package com.myapp.capitalbank.ui.transfers
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccountBalance
-import androidx.compose.material.icons.filled.Public
 import androidx.compose.material.icons.filled.Smartphone
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -17,10 +17,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.myapp.capitalbank.ui.components.GlassCard
-import com.myapp.capitalbank.ui.theme.Gold
-import com.myapp.capitalbank.ui.theme.GradientStart
+import com.myapp.capitalbank.ui.theme.*
 
+/**
+ * A comprehensive transfer screen supporting Peer-to-Peer (P2P),
+ * Domestic, and Global wire simulations.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TransferScreen(onBackClick: () -> Unit) {
@@ -30,16 +32,16 @@ fun TransferScreen(onBackClick: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Transfer Money", color = Color.White) },
+                title = { Text("Transfer Money", color = OnSurfaceLight) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null, tint = Color.White)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Go back", tint = OnSurfaceLight)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
             )
         },
-        containerColor = Color.Black
+        containerColor = BackgroundLight
     ) { padding ->
         LazyColumn(
             modifier = Modifier
@@ -47,7 +49,7 @@ fun TransferScreen(onBackClick: () -> Unit) {
                 .padding(padding)
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = listOf(GradientStart, Color.Black)
+                        colors = listOf(PrimaryGreen.copy(alpha = 0.1f), BackgroundLight)
                     )
                 ),
             contentPadding = PaddingValues(16.dp),
@@ -58,20 +60,28 @@ fun TransferScreen(onBackClick: () -> Unit) {
             }
 
             item {
-                GlassCard(modifier = Modifier.fillMaxWidth()) {
-                    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                        Text("Recipient Details", color = Color.White, fontWeight = FontWeight.Bold)
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(24.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                ) {
+                    Column(modifier = Modifier.padding(24.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                        Text("Recipient Details", color = OnSurfaceLight, fontWeight = FontWeight.Bold)
                         TextField(
                             value = recipient,
                             onValueChange = { recipient = it },
                             label = { Text("Email, Phone or Account #") },
                             modifier = Modifier.fillMaxWidth(),
                             colors = TextFieldDefaults.colors(
-                                focusedContainerColor = Color.White.copy(alpha = 0.05f),
-                                unfocusedContainerColor = Color.White.copy(alpha = 0.05f),
-                                focusedTextColor = Color.White,
-                                unfocusedTextColor = Color.White
-                            )
+                                focusedContainerColor = BackgroundLight,
+                                unfocusedContainerColor = BackgroundLight,
+                                focusedTextColor = OnSurfaceLight,
+                                unfocusedTextColor = OnSurfaceLight,
+                                focusedIndicatorColor = PrimaryBlue,
+                                unfocusedIndicatorColor = Color.Transparent
+                            ),
+                            shape = RoundedCornerShape(12.dp)
                         )
                         TextField(
                             value = amount,
@@ -79,11 +89,14 @@ fun TransferScreen(onBackClick: () -> Unit) {
                             label = { Text("Amount ($)") },
                             modifier = Modifier.fillMaxWidth(),
                             colors = TextFieldDefaults.colors(
-                                focusedContainerColor = Color.White.copy(alpha = 0.05f),
-                                unfocusedContainerColor = Color.White.copy(alpha = 0.05f),
-                                focusedTextColor = Color.White,
-                                unfocusedTextColor = Color.White
-                            )
+                                focusedContainerColor = BackgroundLight,
+                                unfocusedContainerColor = BackgroundLight,
+                                focusedTextColor = OnSurfaceLight,
+                                unfocusedTextColor = OnSurfaceLight,
+                                focusedIndicatorColor = PrimaryGreen,
+                                unfocusedIndicatorColor = Color.Transparent
+                            ),
+                            shape = RoundedCornerShape(12.dp)
                         )
                     }
                 }
@@ -93,8 +106,9 @@ fun TransferScreen(onBackClick: () -> Unit) {
                 Button(
                     onClick = { /* TODO */ },
                     modifier = Modifier.fillMaxWidth().height(56.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Gold, contentColor = Color.Black),
-                    shape = MaterialTheme.shapes.large
+                    colors = ButtonDefaults.buttonColors(containerColor = PrimaryGreen, contentColor = Color.White),
+                    shape = RoundedCornerShape(16.dp),
+                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
                 ) {
                     Text("Confirm Transfer", fontWeight = FontWeight.Bold)
                 }
@@ -109,22 +123,27 @@ fun TransferTypeSection() {
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        TransferTypeItem("P2P", Icons.Default.Smartphone, Modifier.weight(1f))
-        TransferTypeItem("Domestic", Icons.Default.AccountBalance, Modifier.weight(1f))
-        TransferTypeItem("Global", Icons.Default.Public, Modifier.weight(1f))
+        TransferTypeItem("P2P", Icons.Default.Smartphone, PrimaryBlue, Modifier.weight(1f))
+        TransferTypeItem("Domestic", Icons.Default.AccountBalance, PrimaryGreen, Modifier.weight(1f))
+        TransferTypeItem("Global", Icons.Default.AccountBalance, Gold, Modifier.weight(1f))
     }
 }
 
 @Composable
-fun TransferTypeItem(label: String, icon: ImageVector, modifier: Modifier = Modifier) {
-    GlassCard(modifier = modifier) {
+fun TransferTypeItem(label: String, icon: ImageVector, color: Color, modifier: Modifier = Modifier) {
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.padding(16.dp).fillMaxWidth()
         ) {
-            Icon(icon, contentDescription = null, tint = Gold)
-            Text(text = label, color = Color.White, style = MaterialTheme.typography.labelMedium)
+            Icon(icon, contentDescription = null, tint = color)
+            Text(text = label, color = OnSurfaceLight, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold)
         }
     }
 }

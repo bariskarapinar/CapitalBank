@@ -3,6 +3,7 @@ package com.myapp.capitalbank.ui.cards
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Lock
@@ -19,9 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.myapp.capitalbank.ui.components.AppLogo
-import com.myapp.capitalbank.ui.components.GlassCard
-import com.myapp.capitalbank.ui.theme.Gold
-import com.myapp.capitalbank.ui.theme.GradientStart
+import com.myapp.capitalbank.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -29,16 +28,16 @@ fun CardsScreen(onBackClick: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("My Cards", color = Color.White) },
+                title = { Text("My Cards", color = OnSurfaceLight) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null, tint = Color.White)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Go back", tint = OnSurfaceLight)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
             )
         },
-        containerColor = Color.Black
+        containerColor = BackgroundLight
     ) { padding ->
         LazyColumn(
             modifier = Modifier
@@ -46,7 +45,7 @@ fun CardsScreen(onBackClick: () -> Unit) {
                 .padding(padding)
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = listOf(GradientStart, Color.Black)
+                        colors = listOf(SkyBlue.copy(alpha = 0.2f), BackgroundLight)
                     )
                 ),
             contentPadding = PaddingValues(16.dp),
@@ -64,7 +63,7 @@ fun CardsScreen(onBackClick: () -> Unit) {
                 Text(
                     text = "Recent Card Activity",
                     style = MaterialTheme.typography.titleLarge,
-                    color = Color.White
+                    color = OnSurfaceLight
                 )
             }
             
@@ -78,10 +77,17 @@ fun CardsScreen(onBackClick: () -> Unit) {
 
 @Composable
 fun VirtualCard() {
-    GlassCard(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(200.dp)
+            .background(
+                brush = Brush.linearGradient(
+                    colors = listOf(PrimaryBlue, PrimaryGreen)
+                ),
+                shape = RoundedCornerShape(24.dp)
+            )
+            .padding(24.dp)
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -92,7 +98,7 @@ fun VirtualCard() {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                AppLogo(size = 24.dp)
+                AppLogo(size = 24.dp, textColor = Color.White)
                 Text("VISA", color = Color.White, fontWeight = FontWeight.ExtraBold, fontSize = 20.sp)
             }
             
@@ -109,11 +115,11 @@ fun VirtualCard() {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Column {
-                    Text("CARD HOLDER", color = Color.LightGray, style = MaterialTheme.typography.labelSmall)
+                    Text("CARD HOLDER", color = Color.White.copy(alpha = 0.6f), style = MaterialTheme.typography.labelSmall)
                     Text("JOHN DOE", color = Color.White, fontWeight = FontWeight.Bold)
                 }
                 Column(horizontalAlignment = Alignment.End) {
-                    Text("EXPIRES", color = Color.LightGray, style = MaterialTheme.typography.labelSmall)
+                    Text("EXPIRES", color = Color.White.copy(alpha = 0.6f), style = MaterialTheme.typography.labelSmall)
                     Text("08/28", color = Color.White, fontWeight = FontWeight.Bold)
                 }
             }
@@ -134,24 +140,29 @@ fun CardControls() {
 fun ControlItem(title: String, icon: ImageVector, subtitle: String) {
     var isEnabled by remember { mutableStateOf(false) }
     
-    GlassCard(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.padding(16.dp).fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(icon, contentDescription = null, tint = Gold, modifier = Modifier.size(24.dp))
+                Icon(icon, contentDescription = null, tint = PrimaryBlue, modifier = Modifier.size(24.dp))
                 Spacer(modifier = Modifier.width(16.dp))
                 Column {
-                    Text(text = title, color = Color.White, fontWeight = FontWeight.Bold)
-                    Text(text = subtitle, color = Color.LightGray, style = MaterialTheme.typography.labelSmall)
+                    Text(text = title, color = OnSurfaceLight, fontWeight = FontWeight.Bold)
+                    Text(text = subtitle, color = Color.Gray, style = MaterialTheme.typography.labelSmall)
                 }
             }
             Switch(
                 checked = isEnabled,
                 onCheckedChange = { isEnabled = it },
-                colors = SwitchDefaults.colors(checkedThumbColor = Gold)
+                colors = SwitchDefaults.colors(checkedThumbColor = PrimaryGreen)
             )
         }
     }
@@ -159,16 +170,22 @@ fun ControlItem(title: String, icon: ImageVector, subtitle: String) {
 
 @Composable
 fun CardActivityItem() {
-    GlassCard(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
+    Card(
+        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+    ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+            modifier = Modifier.padding(16.dp).fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Column {
-                Text("Netflix Subscription", color = Color.White, fontWeight = FontWeight.Bold)
-                Text("Today, 10:30 AM", color = Color.LightGray, style = MaterialTheme.typography.labelSmall)
+                Text("Netflix Subscription", color = OnSurfaceLight, fontWeight = FontWeight.Bold)
+                Text("Today, 10:30 AM", color = Color.Gray, style = MaterialTheme.typography.labelSmall)
             }
-            Text("-$15.99", color = Color.White, fontWeight = FontWeight.Bold)
+            Text("-$15.99", color = Crimson, fontWeight = FontWeight.Bold)
         }
     }
 }
