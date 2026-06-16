@@ -3,6 +3,7 @@ package com.myapp.capitalbank.ui.support
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Send
@@ -14,10 +15,11 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.myapp.capitalbank.ui.components.GlassCard
-import com.myapp.capitalbank.ui.theme.Gold
-import com.myapp.capitalbank.ui.theme.GradientStart
+import com.myapp.capitalbank.ui.theme.*
 
+/**
+ * A real-time customer support simulation featuring an interactive chat interface.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SupportScreen(onBackClick: () -> Unit) {
@@ -26,16 +28,16 @@ fun SupportScreen(onBackClick: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Customer Support", color = Color.White) },
+                title = { Text("Customer Support", color = OnSurfaceLight) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null, tint = Color.White)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Go back", tint = OnSurfaceLight)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
             )
         },
-        containerColor = Color.Black,
+        containerColor = BackgroundLight,
         bottomBar = {
             Row(
                 modifier = Modifier
@@ -49,14 +51,17 @@ fun SupportScreen(onBackClick: () -> Unit) {
                     placeholder = { Text("Type a message...") },
                     modifier = Modifier.weight(1f),
                     colors = TextFieldDefaults.colors(
-                        focusedContainerColor = Color.White.copy(alpha = 0.05f),
-                        unfocusedContainerColor = Color.White.copy(alpha = 0.05f),
-                        focusedTextColor = Color.White,
-                        unfocusedTextColor = Color.White
-                    )
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
+                        focusedTextColor = OnSurfaceLight,
+                        unfocusedTextColor = OnSurfaceLight,
+                        focusedIndicatorColor = PrimaryBlue,
+                        unfocusedIndicatorColor = Color.Transparent
+                    ),
+                    shape = RoundedCornerShape(24.dp)
                 )
                 IconButton(onClick = { message = "" }) {
-                    Icon(Icons.AutoMirrored.Filled.Send, contentDescription = null, tint = Gold)
+                    Icon(Icons.AutoMirrored.Filled.Send, contentDescription = "Send", tint = PrimaryBlue)
                 }
             }
         }
@@ -67,7 +72,7 @@ fun SupportScreen(onBackClick: () -> Unit) {
                 .padding(padding)
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = listOf(GradientStart, Color.Black)
+                        colors = listOf(PrimaryBlue.copy(alpha = 0.05f), BackgroundLight)
                     )
                 ),
             contentPadding = PaddingValues(16.dp),
@@ -92,11 +97,24 @@ fun ChatMessage(text: String, isUser: Boolean) {
         modifier = Modifier.fillMaxWidth(),
         contentAlignment = if (isUser) Alignment.CenterEnd else Alignment.CenterStart
     ) {
-        GlassCard(
+        Card(
             modifier = Modifier.widthIn(max = 280.dp),
-            content = {
-                Text(text = text, color = if (isUser) Gold else Color.White)
-            }
-        )
+            shape = RoundedCornerShape(
+                topStart = 16.dp,
+                topEnd = 16.dp,
+                bottomStart = if (isUser) 16.dp else 0.dp,
+                bottomEnd = if (isUser) 0.dp else 16.dp
+            ),
+            colors = CardDefaults.cardColors(
+                containerColor = if (isUser) PrimaryBlue else Color.White
+            ),
+            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        ) {
+            Text(
+                text = text,
+                modifier = Modifier.padding(12.dp),
+                color = if (isUser) Color.White else OnSurfaceLight
+            )
+        }
     }
 }
