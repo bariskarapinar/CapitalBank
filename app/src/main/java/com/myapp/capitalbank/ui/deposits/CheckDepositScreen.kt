@@ -2,6 +2,7 @@ package com.myapp.capitalbank.ui.deposits
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CameraAlt
@@ -13,27 +14,27 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.myapp.capitalbank.ui.components.GlassCard
-import com.myapp.capitalbank.ui.theme.Gold
-import com.myapp.capitalbank.ui.theme.GradientStart
+import com.myapp.capitalbank.ui.theme.*
 
+/**
+ * Remote check deposit simulation with camera capture interface.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CheckDepositScreen(onBackClick: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Remote Check Deposit", color = Color.White) },
+                title = { Text("Remote Check Deposit", color = OnSurfaceLight) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null, tint = Color.White)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Go back", tint = OnSurfaceLight)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
             )
         },
-        containerColor = Color.Black
+        containerColor = BackgroundLight
     ) { padding ->
         Column(
             modifier = Modifier
@@ -41,7 +42,7 @@ fun CheckDepositScreen(onBackClick: () -> Unit) {
                 .padding(padding)
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = listOf(GradientStart, Color.Black)
+                        colors = listOf(PrimaryGreen.copy(alpha = 0.1f), BackgroundLight)
                     )
                 )
                 .padding(16.dp),
@@ -51,7 +52,7 @@ fun CheckDepositScreen(onBackClick: () -> Unit) {
             Text(
                 "Capture Check Images",
                 style = MaterialTheme.typography.titleLarge,
-                color = Color.White
+                color = OnSurfaceLight
             )
             
             CheckCaptureBox("Front of Check")
@@ -62,8 +63,9 @@ fun CheckDepositScreen(onBackClick: () -> Unit) {
             Button(
                 onClick = { /* TODO */ },
                 modifier = Modifier.fillMaxWidth().height(56.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Gold, contentColor = Color.Black),
-                shape = MaterialTheme.shapes.large
+                colors = ButtonDefaults.buttonColors(containerColor = PrimaryGreen, contentColor = Color.White),
+                shape = RoundedCornerShape(16.dp),
+                elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
             ) {
                 Text("Deposit Check", fontWeight = FontWeight.Bold)
             }
@@ -73,19 +75,22 @@ fun CheckDepositScreen(onBackClick: () -> Unit) {
 
 @Composable
 fun CheckCaptureBox(label: String) {
-    GlassCard(
+    Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(140.dp)
+            .height(140.dp),
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Icon(Icons.Default.CameraAlt, contentDescription = null, tint = Color.LightGray, modifier = Modifier.size(32.dp))
+            Icon(Icons.Default.CameraAlt, contentDescription = null, tint = Color.Gray, modifier = Modifier.size(32.dp))
             Spacer(modifier = Modifier.height(8.dp))
-            Text(label, color = Color.LightGray)
+            Text(label, color = Color.Gray)
         }
     }
 }
