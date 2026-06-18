@@ -2,22 +2,32 @@ package com.myapp.capitalbank.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val DeepBluePrimary = Color(0xFF1A237E)
-val DeepBlueSecondary = Color(0xFF283593)
-val DeepBlueTertiary = Color(0xFF303F9F)
+// Vibrant Primary Palette
+val PrimaryGreen = Color(0xFF00C853)
+val PrimaryBlue = Color(0xFF2979FF)
+val AccentTeal = Color(0xFF00BFA5)
+val ElectricBlue = Color(0xFF00E5FF)
 
+// Branded Gold (remains for premium status)
 val Gold = Color(0xFFFFD700)
 val AccentGold = Color(0xFFFFC107)
 
+// Dynamic Secondary Colors
 val Emerald = Color(0xFF2E7D32)
 val Crimson = Color(0xFFC62828)
+val NeonPurple = Color(0xFFD500F9)
 
-val BackgroundDark = Color(0xFF0C0C0C)
-val SurfaceDark = Color(0xFF1E1E1E)
-val OnSurfaceDark = Color(0xFFE0E0E0)
+// Light/Vibrant Backgrounds
+val BackgroundLight = Color(0xFFF5F9FF)
+val SurfaceLight = Color(0xFFFFFFFF)
+val OnSurfaceLight = Color(0xFF1A1C1E)
 
-val GradientStart = Color(0xFF1A237E)
-val GradientEnd = Color(0xFF00C853)
+// Fresh Gradients
+val GradientStart = Color(0xFF00C853) // Vibrant Green
+val GradientMid = Color(0xFF00E5FF)   // Electric Blue
+val GradientEnd = Color(0xFF2979FF)   // Deep Blue
 
-val CardBackground = Color(0xFF212121)
-val GlassEffect = Color(0x33FFFFFF)
+val CardBackground = Color(0xFFFFFFFF)
+val GlassEffect = Color(0x66FFFFFF)
+val PremiumCardGradient = listOf(Color(0xFF00C853), Color(0xFF2979FF))
+val SkyBlue = Color(0xFF80D8FF)
