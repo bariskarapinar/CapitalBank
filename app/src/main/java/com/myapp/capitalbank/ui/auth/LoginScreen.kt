@@ -13,11 +13,12 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.myapp.capitalbank.ui.components.AppLogo
-import com.myapp.capitalbank.ui.theme.Gold
-import com.myapp.capitalbank.ui.theme.GradientStart
+import com.myapp.capitalbank.ui.theme.*
 
+/**
+ * The premium entry point for the application, featuring biometric authentication simulation.
+ */
 @Composable
 fun LoginScreen(onLoginSuccess: () -> Unit) {
     Column(
@@ -25,25 +26,25 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
             .fillMaxSize()
             .background(
                 brush = Brush.verticalGradient(
-                    colors = listOf(GradientStart, Color.Black)
+                    colors = listOf(PrimaryGreen.copy(alpha = 0.8f), PrimaryBlue.copy(alpha = 0.8f), BackgroundLight)
                 )
             )
             .padding(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        AppLogo(size = 80.dp)
+        AppLogo(size = 80.dp, textColor = OnSurfaceLight)
         
         Spacer(modifier = Modifier.height(64.dp))
         
         Text(
             text = "Welcome to",
-            color = Color.LightGray,
+            color = Color.DarkGray,
             style = MaterialTheme.typography.bodyLarge
         )
         Text(
             text = "Capital Bank",
-            color = Color.White,
+            color = OnSurfaceLight,
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold
         )
@@ -55,8 +56,9 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Gold, contentColor = Color.Black),
-            shape = RoundedCornerShape(16.dp)
+            colors = ButtonDefaults.buttonColors(containerColor = PrimaryBlue, contentColor = Color.White),
+            shape = RoundedCornerShape(16.dp),
+            elevation = ButtonDefaults.buttonElevation(defaultElevation = 8.dp)
         ) {
             Icon(Icons.Default.Fingerprint, contentDescription = null)
             Spacer(modifier = Modifier.width(8.dp))
@@ -64,7 +66,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
         }
         
         TextButton(onClick = onLoginSuccess) {
-            Text("Use Passcode instead", color = Gold)
+            Text("Use Passcode instead", color = PrimaryBlue)
         }
     }
 }
