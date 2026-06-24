@@ -3,6 +3,7 @@ package com.myapp.capitalbank.ui.insurance
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.DirectionsCar
@@ -18,26 +19,27 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.myapp.capitalbank.ui.components.GlassCard
-import com.myapp.capitalbank.ui.theme.Gold
-import com.myapp.capitalbank.ui.theme.GradientStart
+import com.myapp.capitalbank.ui.theme.*
 
+/**
+ * Displays the user's active insurance policies and monthly premiums.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InsuranceScreen(onBackClick: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Insurance Portfolio", color = Color.White) },
+                title = { Text("Insurance Portfolio", color = OnSurfaceLight) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null, tint = Color.White)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Go back", tint = OnSurfaceLight)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
             )
         },
-        containerColor = Color.Black
+        containerColor = BackgroundLight
     ) { padding ->
         LazyColumn(
             modifier = Modifier
@@ -45,7 +47,7 @@ fun InsuranceScreen(onBackClick: () -> Unit) {
                 .padding(padding)
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = listOf(GradientStart, Color.Black)
+                        colors = listOf(PrimaryGreen.copy(alpha = 0.1f), BackgroundLight)
                     )
                 ),
             contentPadding = PaddingValues(16.dp),
@@ -56,19 +58,20 @@ fun InsuranceScreen(onBackClick: () -> Unit) {
             }
             
             item {
-                Text("Active Policies", style = MaterialTheme.typography.titleLarge, color = Color.White)
+                Text("Active Policies", style = MaterialTheme.typography.titleLarge, color = OnSurfaceLight)
             }
             
-            item { InsurancePolicyItem("Life Protection", "Policy #LIFE-9821", "Active", Icons.Default.Favorite, Color.Red) }
-            item { InsurancePolicyItem("Home Secure", "Policy #HOME-4412", "Active", Icons.Default.Home, Color.Cyan) }
-            item { InsurancePolicyItem("Auto Elite", "Policy #AUTO-0012", "Renewal Pending", Icons.Default.DirectionsCar, Gold) }
+            item { InsurancePolicyItem("Life Protection", "Policy #LIFE-9821", "Active", Icons.Default.Favorite, Crimson) }
+            item { InsurancePolicyItem("Home Secure", "Policy #HOME-4412", "Active", Icons.Default.Home, PrimaryBlue) }
+            item { InsurancePolicyItem("Auto Elite", "Policy #AUTO-0012", "Renewal Pending", Icons.Default.DirectionsCar, PrimaryGreen) }
             
             item {
                 Button(
                     onClick = { /* TODO */ },
                     modifier = Modifier.fillMaxWidth().height(56.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Gold, contentColor = Color.Black),
-                    shape = MaterialTheme.shapes.large
+                    colors = ButtonDefaults.buttonColors(containerColor = PrimaryGreen, contentColor = Color.White),
+                    shape = RoundedCornerShape(16.dp),
+                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
                 ) {
                     Icon(Icons.Default.Shield, contentDescription = null)
                     Spacer(modifier = Modifier.width(8.dp))
@@ -81,20 +84,30 @@ fun InsuranceScreen(onBackClick: () -> Unit) {
 
 @Composable
 fun InsuranceHeader() {
-    GlassCard(modifier = Modifier.fillMaxWidth()) {
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text("Total Monthly Premium", color = Color.LightGray, style = MaterialTheme.typography.labelMedium)
-            Text("$245.50", color = Color.White, style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
-            Text("All policies are up to date", color = Color.Green, style = MaterialTheme.typography.labelSmall)
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
+    ) {
+        Column(modifier = Modifier.padding(24.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text("Total Monthly Premium", color = Color.Gray, style = MaterialTheme.typography.labelMedium)
+            Text("$245.50", color = OnSurfaceLight, style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
+            Text("All policies are up to date", color = PrimaryGreen, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
         }
     }
 }
 
 @Composable
 fun InsurancePolicyItem(name: String, id: String, status: String, icon: ImageVector, color: Color) {
-    GlassCard(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.padding(16.dp).fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -102,18 +115,18 @@ fun InsurancePolicyItem(name: String, id: String, status: String, icon: ImageVec
                 Box(
                     modifier = Modifier
                         .size(40.dp)
-                        .background(color.copy(alpha = 0.2f), MaterialTheme.shapes.small),
+                        .background(color.copy(alpha = 0.1f), MaterialTheme.shapes.small),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(icon, contentDescription = null, tint = color)
                 }
                 Spacer(modifier = Modifier.width(16.dp))
                 Column {
-                    Text(name, color = Color.White, fontWeight = FontWeight.Bold)
-                    Text(id, color = Color.LightGray, style = MaterialTheme.typography.labelSmall)
+                    Text(name, color = OnSurfaceLight, fontWeight = FontWeight.Bold)
+                    Text(id, color = Color.Gray, style = MaterialTheme.typography.labelSmall)
                 }
             }
-            Text(status, color = if(status == "Active") Color.Green else Gold, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
+            Text(status, color = if(status == "Active") PrimaryGreen else PrimaryBlue, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold)
         }
     }
 }
