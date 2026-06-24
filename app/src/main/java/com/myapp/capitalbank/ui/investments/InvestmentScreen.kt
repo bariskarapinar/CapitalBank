@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.TrendingUp
+import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,28 +17,28 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.myapp.capitalbank.ui.components.GlassCard
-import com.myapp.capitalbank.ui.theme.Emerald
-import com.myapp.capitalbank.ui.theme.Gold
-import com.myapp.capitalbank.ui.theme.GradientStart
+import com.myapp.capitalbank.ui.theme.*
 
+/**
+ * Investment portfolio screen with high-fidelity performance tracking.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InvestmentScreen(onBackClick: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Investments", color = Color.White) },
+                title = { Text("Investments", color = OnSurfaceLight) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null, tint = Color.White)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Go back", tint = OnSurfaceLight)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
             )
         },
-        containerColor = Color.Black
+        containerColor = BackgroundLight
     ) { padding ->
         LazyColumn(
             modifier = Modifier
@@ -46,7 +46,7 @@ fun InvestmentScreen(onBackClick: () -> Unit) {
                 .padding(padding)
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = listOf(GradientStart, Color.Black)
+                        colors = listOf(PrimaryGreen.copy(alpha = 0.1f), BackgroundLight)
                     )
                 ),
             contentPadding = PaddingValues(16.dp),
@@ -57,19 +57,19 @@ fun InvestmentScreen(onBackClick: () -> Unit) {
             }
 
             item {
-                Text("Performance Chart", style = MaterialTheme.typography.titleLarge, color = Color.White)
+                Text("Performance Chart", style = MaterialTheme.typography.titleLarge, color = OnSurfaceLight)
             }
 
             item {
                 SparklineChart(
                     data = listOf(10f, 15f, 12f, 25f, 18f, 30f, 45f),
-                    color = Emerald,
+                    color = PrimaryGreen,
                     modifier = Modifier.fillMaxWidth().height(150.dp)
                 )
             }
 
             item {
-                Text("Trending Stocks", style = MaterialTheme.typography.titleLarge, color = Color.White)
+                Text("Trending Stocks", style = MaterialTheme.typography.titleLarge, color = OnSurfaceLight)
             }
 
             item { StockItem("AAPL", "Apple Inc.", "$182.45", "+2.4%") }
@@ -81,13 +81,18 @@ fun InvestmentScreen(onBackClick: () -> Unit) {
 
 @Composable
 fun PortfolioSummaryCard() {
-    GlassCard(modifier = Modifier.fillMaxWidth()) {
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text("Total Portfolio Value", color = Color.LightGray, style = MaterialTheme.typography.labelMedium)
-            Text("$42,850.25", color = Gold, style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = androidx.compose.foundation.shape.RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Column(modifier = Modifier.padding(24.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text("Total Portfolio Value", color = Color.Gray, style = MaterialTheme.typography.labelMedium)
+            Text("$42,850.25", color = OnSurfaceLight, style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.TrendingUp, contentDescription = null, tint = Emerald, modifier = Modifier.size(16.dp))
-                Text(" +$1,240.00 (3.2%) today", color = Emerald, style = MaterialTheme.typography.labelSmall)
+                Icon(Icons.AutoMirrored.Filled.TrendingUp, contentDescription = "Portfolio Trend", tint = PrimaryGreen, modifier = Modifier.size(16.dp))
+                Text(" +$1,240.00 (3.2%) today", color = PrimaryGreen, style = MaterialTheme.typography.labelSmall)
             }
         }
     }
@@ -115,19 +120,24 @@ fun SparklineChart(data: List<Float>, color: Color, modifier: Modifier = Modifie
 }
 
 @Composable
-fun StockItem(symbol: String, name: String, price: String, change: String, changeColor: Color = Emerald) {
-    GlassCard(modifier = Modifier.fillMaxWidth()) {
+fun StockItem(symbol: String, name: String, price: String, change: String, changeColor: Color = PrimaryGreen) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = androidx.compose.foundation.shape.RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.padding(16.dp).fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column {
-                Text(symbol, color = Color.White, fontWeight = FontWeight.Bold)
-                Text(name, color = Color.LightGray, style = MaterialTheme.typography.labelSmall)
+                Text(symbol, color = OnSurfaceLight, fontWeight = FontWeight.Bold)
+                Text(name, color = Color.Gray, style = MaterialTheme.typography.labelSmall)
             }
             Column(horizontalAlignment = Alignment.End) {
-                Text(price, color = Color.White, fontWeight = FontWeight.Bold)
+                Text(price, color = OnSurfaceLight, fontWeight = FontWeight.Bold)
                 Text(change, color = changeColor, style = MaterialTheme.typography.labelSmall)
             }
         }
