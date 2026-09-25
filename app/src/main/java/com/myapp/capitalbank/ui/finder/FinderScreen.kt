@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.LocalAtm
@@ -17,26 +18,27 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.myapp.capitalbank.ui.components.GlassCard
-import com.myapp.capitalbank.ui.theme.Gold
-import com.myapp.capitalbank.ui.theme.GradientStart
+import com.myapp.capitalbank.ui.theme.*
 
+/**
+ * A location-based services module for finding physical bank branches and ATMs.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FinderScreen(onBackClick: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Branch & ATM Finder", color = Color.White) },
+                title = { Text("Branch & ATM Finder", color = OnSurfaceLight) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null, tint = Color.White)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Go back", tint = OnSurfaceLight)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
             )
         },
-        containerColor = Color.Black
+        containerColor = BackgroundLight
     ) { padding ->
         LazyColumn(
             modifier = Modifier
@@ -44,7 +46,7 @@ fun FinderScreen(onBackClick: () -> Unit) {
                 .padding(padding)
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = listOf(GradientStart, Color.Black)
+                        colors = listOf(PrimaryGreen.copy(alpha = 0.1f), BackgroundLight)
                     )
                 ),
             contentPadding = PaddingValues(16.dp),
@@ -55,7 +57,7 @@ fun FinderScreen(onBackClick: () -> Unit) {
             }
             
             item {
-                Text("Nearby Locations", style = MaterialTheme.typography.titleLarge, color = Color.White)
+                Text("Nearby Locations", style = MaterialTheme.typography.titleLarge, color = OnSurfaceLight)
             }
             
             val locations = listOf(
@@ -76,16 +78,19 @@ data class LocationData(val name: String, val address: String, val distance: Str
 
 @Composable
 fun MapSimulationCard() {
-    GlassCard(
+    Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(250.dp)
+            .height(250.dp),
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
     ) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Icon(Icons.Default.Map, contentDescription = null, tint = Color.White.copy(alpha = 0.2f), modifier = Modifier.size(100.dp))
+            Icon(Icons.Default.Map, contentDescription = null, tint = PrimaryBlue.copy(alpha = 0.05f), modifier = Modifier.size(150.dp))
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Icon(Icons.Default.LocationOn, contentDescription = null, tint = Gold, modifier = Modifier.size(40.dp))
-                Text("Map Simulation", color = Color.White, fontWeight = FontWeight.Bold)
+                Icon(Icons.Default.LocationOn, contentDescription = null, tint = PrimaryGreen, modifier = Modifier.size(40.dp))
+                Text("Map Simulation", color = OnSurfaceLight, fontWeight = FontWeight.Bold)
             }
         }
     }
@@ -93,9 +98,14 @@ fun MapSimulationCard() {
 
 @Composable
 fun LocationItem(location: LocationData) {
-    GlassCard(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.padding(16.dp).fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -103,22 +113,22 @@ fun LocationItem(location: LocationData) {
                 Box(
                     modifier = Modifier
                         .size(40.dp)
-                        .background(if (location.isBranch) Gold.copy(alpha = 0.2f) else Color.Cyan.copy(alpha = 0.2f), MaterialTheme.shapes.small),
+                        .background(if (location.isBranch) PrimaryBlue.copy(alpha = 0.1f) else ElectricBlue.copy(alpha = 0.1f), MaterialTheme.shapes.small),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         if (location.isBranch) Icons.Default.LocationOn else Icons.Default.LocalAtm,
                         contentDescription = null,
-                        tint = if (location.isBranch) Gold else Color.Cyan
+                        tint = if (location.isBranch) PrimaryBlue else PrimaryGreen
                     )
                 }
                 Spacer(modifier = Modifier.width(16.dp))
                 Column {
-                    Text(location.name, color = Color.White, fontWeight = FontWeight.Bold)
-                    Text(location.address, color = Color.LightGray, style = MaterialTheme.typography.labelSmall)
+                    Text(location.name, color = OnSurfaceLight, fontWeight = FontWeight.Bold)
+                    Text(location.address, color = Color.Gray, style = MaterialTheme.typography.labelSmall)
                 }
             }
-            Text(location.distance, color = Color.LightGray, style = MaterialTheme.typography.labelSmall)
+            Text(location.distance, color = Color.Gray, style = MaterialTheme.typography.labelSmall)
         }
     }
 }
