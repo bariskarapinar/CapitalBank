@@ -3,9 +3,9 @@ package com.myapp.capitalbank.ui.metals
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Diamond
 import androidx.compose.material.icons.filled.Monitor
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -15,9 +15,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.myapp.capitalbank.ui.components.GlassCard
-import com.myapp.capitalbank.ui.theme.Gold
-import com.myapp.capitalbank.ui.theme.GradientStart
+import com.myapp.capitalbank.ui.theme.*
 
 /**
  * A specialized module for tracking and managing physical precious metal holdings.
@@ -28,16 +26,16 @@ fun GoldMetalsScreen(onBackClick: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Precious Metals Vault", color = Color.White) },
+                title = { Text("Precious Metals Vault", color = OnSurfaceLight) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null, tint = Color.White)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Go back", tint = OnSurfaceLight)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
             )
         },
-        containerColor = Color.Black
+        containerColor = BackgroundLight
     ) { padding ->
         LazyColumn(
             modifier = Modifier
@@ -45,7 +43,7 @@ fun GoldMetalsScreen(onBackClick: () -> Unit) {
                 .padding(padding)
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = listOf(Color(0xFFFFD600), Color(0xFFE65100), Color.Black)
+                        colors = listOf(Gold.copy(alpha = 0.1f), BackgroundLight)
                     )
                 ),
             contentPadding = PaddingValues(16.dp),
@@ -58,17 +56,18 @@ fun GoldMetalsScreen(onBackClick: () -> Unit) {
                 MetalSummaryCard("Physical Silver", "1,500 oz", "$75,000", Color.LightGray)
             }
             item {
-                MetalSummaryCard("Platinum", "15 oz", "$14,800", Color.Cyan)
+                MetalSummaryCard("Platinum", "15 oz", "$14,800", PrimaryBlue)
             }
             
             item {
                 Button(
                     onClick = { /* TODO */ },
                     modifier = Modifier.fillMaxWidth().height(56.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.White.copy(alpha = 0.1f), contentColor = Color.White),
-                    shape = MaterialTheme.shapes.large
+                    colors = ButtonDefaults.buttonColors(containerColor = PrimaryBlue, contentColor = Color.White),
+                    shape = RoundedCornerShape(16.dp),
+                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
                 ) {
-                    Icon(Icons.Default.Monitor, contentDescription = null, tint = Gold)
+                    Icon(Icons.Default.Monitor, contentDescription = null)
                     Spacer(modifier = Modifier.width(8.dp))
                     Text("View Live Market Prices", fontWeight = FontWeight.Bold)
                 }
@@ -79,19 +78,24 @@ fun GoldMetalsScreen(onBackClick: () -> Unit) {
 
 @Composable
 fun MetalSummaryCard(label: String, amount: String, value: String, color: Color) {
-    GlassCard(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.padding(24.dp).fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column {
-                Text(label, color = color, fontSize = androidx.compose.ui.unit.TextUnit.Unspecified, fontWeight = FontWeight.Bold)
-                Text(amount, color = Color.White, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.ExtraBold)
+                Text(label, color = color, fontWeight = FontWeight.Bold)
+                Text(amount, color = OnSurfaceLight, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.ExtraBold)
             }
             Column(horizontalAlignment = Alignment.End) {
-                Text("Current Value", color = Color.LightGray, style = MaterialTheme.typography.labelSmall)
-                Text(value, color = Color.White, fontWeight = FontWeight.Bold)
+                Text("Current Value", color = Color.Gray, style = MaterialTheme.typography.labelSmall)
+                Text(value, color = OnSurfaceLight, fontWeight = FontWeight.Bold)
             }
         }
     }
