@@ -3,6 +3,7 @@ package com.myapp.capitalbank.ui.crypto
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CurrencyBitcoin
@@ -17,27 +18,27 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.myapp.capitalbank.ui.components.GlassCard
-import com.myapp.capitalbank.ui.theme.Emerald
-import com.myapp.capitalbank.ui.theme.Gold
-import com.myapp.capitalbank.ui.theme.GradientStart
+import com.myapp.capitalbank.ui.theme.*
 
+/**
+ * Digital asset and cryptocurrency management portal.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CryptoScreen(onBackClick: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Crypto Wallet", color = Color.White) },
+                title = { Text("Crypto Wallet", color = OnSurfaceLight) },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null, tint = Color.White)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Go back", tint = OnSurfaceLight)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
             )
         },
-        containerColor = Color.Black
+        containerColor = BackgroundLight
     ) { padding ->
         LazyColumn(
             modifier = Modifier
@@ -45,7 +46,7 @@ fun CryptoScreen(onBackClick: () -> Unit) {
                 .padding(padding)
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = listOf(GradientStart, Color.Black)
+                        colors = listOf(PrimaryBlue.copy(alpha = 0.1f), BackgroundLight)
                     )
                 ),
             contentPadding = PaddingValues(16.dp),
@@ -56,7 +57,7 @@ fun CryptoScreen(onBackClick: () -> Unit) {
             }
             
             item {
-                Text("My Assets", style = MaterialTheme.typography.titleLarge, color = Color.White)
+                Text("My Assets", style = MaterialTheme.typography.titleLarge, color = OnSurfaceLight)
             }
             
             item { CryptoAssetItem("Bitcoin", "BTC", "0.45", "$28,450.00", Icons.Default.CurrencyBitcoin, Color(0xFFF7931A)) }
@@ -67,8 +68,9 @@ fun CryptoScreen(onBackClick: () -> Unit) {
                 Button(
                     onClick = { /* TODO */ },
                     modifier = Modifier.fillMaxWidth().height(56.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Gold, contentColor = Color.Black),
-                    shape = MaterialTheme.shapes.large
+                    colors = ButtonDefaults.buttonColors(containerColor = PrimaryBlue, contentColor = Color.White),
+                    shape = RoundedCornerShape(16.dp),
+                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 4.dp)
                 ) {
                     Text("Trade Assets", fontWeight = FontWeight.Bold)
                 }
@@ -79,20 +81,30 @@ fun CryptoScreen(onBackClick: () -> Unit) {
 
 @Composable
 fun CryptoSummaryCard() {
-    GlassCard(modifier = Modifier.fillMaxWidth()) {
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text("Total Crypto Balance", color = Color.LightGray, style = MaterialTheme.typography.labelMedium)
-            Text("$40,450.00", color = Color.White, style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
-            Text("≈ 1.25 BTC", color = Gold, style = MaterialTheme.typography.bodyMedium)
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Column(modifier = Modifier.padding(24.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text("Total Crypto Balance", color = Color.Gray, style = MaterialTheme.typography.labelMedium)
+            Text("$40,450.00", color = OnSurfaceLight, style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
+            Text("≈ 1.25 BTC", color = PrimaryBlue, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
         }
     }
 }
 
 @Composable
 fun CryptoAssetItem(name: String, symbol: String, amount: String, value: String, icon: ImageVector, iconColor: Color) {
-    GlassCard(modifier = Modifier.fillMaxWidth()) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.padding(16.dp).fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -100,20 +112,20 @@ fun CryptoAssetItem(name: String, symbol: String, amount: String, value: String,
                 Box(
                     modifier = Modifier
                         .size(40.dp)
-                        .background(iconColor.copy(alpha = 0.2f), MaterialTheme.shapes.small),
+                        .background(iconColor.copy(alpha = 0.1f), MaterialTheme.shapes.small),
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(icon, contentDescription = null, tint = iconColor)
                 }
                 Spacer(modifier = Modifier.width(16.dp))
                 Column {
-                    Text(name, color = Color.White, fontWeight = FontWeight.Bold)
-                    Text(symbol, color = Color.LightGray, style = MaterialTheme.typography.labelSmall)
+                    Text(name, color = OnSurfaceLight, fontWeight = FontWeight.Bold)
+                    Text(symbol, color = Color.Gray, style = MaterialTheme.typography.labelSmall)
                 }
             }
             Column(horizontalAlignment = Alignment.End) {
-                Text(amount, color = Color.White, fontWeight = FontWeight.Bold)
-                Text(value, color = Color.LightGray, style = MaterialTheme.typography.labelSmall)
+                Text(amount, color = OnSurfaceLight, fontWeight = FontWeight.Bold)
+                Text(value, color = Color.Gray, style = MaterialTheme.typography.labelSmall)
             }
         }
     }
