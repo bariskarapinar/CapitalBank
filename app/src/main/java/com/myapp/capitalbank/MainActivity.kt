@@ -13,7 +13,10 @@ import androidx.navigation.navArgument
 import com.myapp.capitalbank.ui.accounts.AccountDetailsScreen
 import com.myapp.capitalbank.ui.ai.AiAssistantScreen
 import com.myapp.capitalbank.ui.analytics.AnalyticsScreen
+import com.myapp.capitalbank.ui.art.ArtCollectiblesScreen
 import com.myapp.capitalbank.ui.auth.LoginScreen
+import com.myapp.capitalbank.ui.auto.AutoLeasingScreen
+import com.myapp.capitalbank.ui.balance.DetailedBalanceScreen
 import com.myapp.capitalbank.ui.budget.BudgetingScreen
 import com.myapp.capitalbank.ui.business.BusinessScreen
 import com.myapp.capitalbank.ui.cards.CardsScreen
@@ -26,16 +29,23 @@ import com.myapp.capitalbank.ui.family.FamilyScreen
 import com.myapp.capitalbank.ui.finder.FinderScreen
 import com.myapp.capitalbank.ui.insurance.InsuranceScreen
 import com.myapp.capitalbank.ui.investments.InvestmentScreen
+import com.myapp.capitalbank.ui.jets.PrivateJetScreen
 import com.myapp.capitalbank.ui.lifestyle.LifestyleScreen
 import com.myapp.capitalbank.ui.loans.LoanScreen
+import com.myapp.capitalbank.ui.marketplace.MarketplaceScreen
+import com.myapp.capitalbank.ui.metals.GoldMetalsScreen
 import com.myapp.capitalbank.ui.navigation.Screen
 import com.myapp.capitalbank.ui.news.NewsScreen
+import com.myapp.capitalbank.ui.philanthropy.PhilanthropyScreen
+import com.myapp.capitalbank.ui.reit.ReitScreen
 import com.myapp.capitalbank.ui.rewards.RewardsScreen
 import com.myapp.capitalbank.ui.support.SupportScreen
 import com.myapp.capitalbank.ui.theme.CapitalBankTheme
 import com.myapp.capitalbank.ui.transfers.TransferScreen
 import com.myapp.capitalbank.ui.travel.TravelScreen
 import com.myapp.capitalbank.ui.vault.VaultScreen
+import com.myapp.capitalbank.ui.wellness.WellnessScreen
+import com.myapp.capitalbank.ui.yachts.YachtFinancingScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -67,7 +77,11 @@ fun MainNavigation() {
         composable(Screen.Dashboard.route) {
             DashboardScreen(
                 onAccountClick = { accountId ->
-                    navController.navigate(Screen.AccountDetails.createRoute(accountId))
+                    if (accountId == "total") {
+                        navController.navigate(Screen.DetailedBalance.route)
+                    } else {
+                        navController.navigate(Screen.AccountDetails.createRoute(accountId))
+                    }
                 },
                 onCardsClick = { navController.navigate(Screen.Cards.route) },
                 onTransfersClick = { navController.navigate(Screen.Transfers.route) },
@@ -89,7 +103,22 @@ fun MainNavigation() {
                 onFamilyClick = { navController.navigate(Screen.Family.route) },
                 onTravelClick = { navController.navigate(Screen.Travel.route) },
                 onVaultClick = { navController.navigate(Screen.Vault.route) },
-                onEcoClick = { navController.navigate(Screen.Eco.route) }
+                onEcoClick = { navController.navigate(Screen.Eco.route) },
+                onAutoClick = { navController.navigate(Screen.AutoLeasing.route) },
+                onReitClick = { navController.navigate(Screen.Reit.route) },
+                onMetalsClick = { navController.navigate(Screen.GoldMetals.route) },
+                onWellnessClick = { navController.navigate(Screen.Wellness.route) },
+                onMarketClick = { navController.navigate(Screen.Marketplace.route) },
+                onArtClick = { navController.navigate(Screen.ArtCollectibles.route) },
+                onYachtClick = { navController.navigate(Screen.YachtFinancing.route) },
+                onJetClick = { navController.navigate(Screen.PrivateJets.route) },
+                onPhilanthropyClick = { navController.navigate(Screen.Philanthropy.route) }
+            )
+        }
+        composable(Screen.DetailedBalance.route) {
+            DetailedBalanceScreen(
+                onBackClick = { navController.popBackStack() },
+                totalBalance = 17920.50 // Simulated total balance
             )
         }
         composable(
@@ -162,6 +191,33 @@ fun MainNavigation() {
         }
         composable(Screen.Eco.route) {
             EcoScreen(onBackClick = { navController.popBackStack() })
+        }
+        composable(Screen.AutoLeasing.route) {
+            AutoLeasingScreen(onBackClick = { navController.popBackStack() })
+        }
+        composable(Screen.Reit.route) {
+            ReitScreen(onBackClick = { navController.popBackStack() })
+        }
+        composable(Screen.GoldMetals.route) {
+            GoldMetalsScreen(onBackClick = { navController.popBackStack() })
+        }
+        composable(Screen.Wellness.route) {
+            WellnessScreen(onBackClick = { navController.popBackStack() })
+        }
+        composable(Screen.Marketplace.route) {
+            MarketplaceScreen(onBackClick = { navController.popBackStack() })
+        }
+        composable(Screen.ArtCollectibles.route) {
+            ArtCollectiblesScreen(onBackClick = { navController.popBackStack() })
+        }
+        composable(Screen.YachtFinancing.route) {
+            YachtFinancingScreen(onBackClick = { navController.popBackStack() })
+        }
+        composable(Screen.PrivateJets.route) {
+            PrivateJetScreen(onBackClick = { navController.popBackStack() })
+        }
+        composable(Screen.Philanthropy.route) {
+            PhilanthropyScreen(onBackClick = { navController.popBackStack() })
         }
     }
 }
